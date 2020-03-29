@@ -1,0 +1,13 @@
+{
+  "@@last_modified": "2020-02-23T00:11:46.246486",
+  "appTitle": "شغف",
+  "@appTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locale": "ar",
+  "@locale": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "121289299206",
+    "firebase_url": "https://clinicappa.firebaseio.com",
+    "project_id": "clinicappa",
+    "storage_bucket": "clinicappa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121289299206:android:d7ba7cbfade8448ab5ba87",
+        "android_client_info": {
+          "package_name": "com.clinic.obesity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121289299206-c2ql63omp2b723mkhod01m4t1oqt7jnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZnzrHJn6KgZdG_IFBObt5iv2G2i9QwuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121289299206-c2ql63omp2b723mkhod01m4t1oqt7jnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

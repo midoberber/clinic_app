@@ -1,0 +1,13 @@
+{
+  "@@last_modified": "2020-02-23T00:11:46.246486",
+  "appTitle": "clinic_app",
+  "@appTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locale": "en",
+  "@locale": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
