@@ -80,7 +80,9 @@ class _SignUpPageState extends State<SignUpPage> {
   //   }
   // }
 
-  void showSimpleCustomDialog(BuildContext context,) {
+  void showSimpleCustomDialog(
+    BuildContext context,
+  ) {
     Dialog simpleDialog = Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -98,7 +100,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(color: Colors.red),
               ),
             ),
-           
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
               child: Row(
@@ -165,8 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text(
-                              AppLocalizations.of(context).register,
+                        Text(AppLocalizations.of(context).register,
                             style: TextStyle(fontSize: 18)),
                         SizedBox(
                           height: 20,
@@ -190,22 +190,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 20,
                         ),
                         provider.loading
-                                ? CircularProgressIndicator():
-                        submitButton(
-                            context,
-                            "Register",
-                            provider.loading
-                                ? null
-                                : () {
-                                    // call the login method .
-                                    provider.register(
-                                        context,
-                                        _phoneController.text,
-                                        _passwordController.text,
-                                        _confirmPasswordController.text
-                                        
-                                        );
-                                  }),
+                            ? CircularProgressIndicator()
+                            : submitButton(
+                                context: context,
+                                text: "Register",
+                                onPress: provider.loading
+                                    ? null
+                                    : () {
+                                        // call the login method .
+                                        provider.register(
+                                            context,
+                                            _phoneController.text,
+                                            _passwordController.text,
+                                            _confirmPasswordController.text);
+                                      }),
                         Expanded(
                           flex: 2,
                           child: SizedBox(),

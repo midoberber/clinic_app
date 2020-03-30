@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(clinic_appApp(
+  runApp(ClinicApp(
     repository: AppRepository(
       KeyValueStorage(
         await SharedPreferences.getInstance(),

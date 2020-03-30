@@ -30,7 +30,7 @@ Widget title() {
   );
 }
 
-Widget submitButton(BuildContext context, String text, VoidCallback onPress) {
+Widget submitButton({BuildContext context, String text, VoidCallback onPress}) {
   return GestureDetector(
     onTap: onPress,
     child: Container(

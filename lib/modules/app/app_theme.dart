@@ -1,3 +1,4 @@
+import 'package:clinic_app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 
 const gradiantColors = [
@@ -6,15 +7,15 @@ const gradiantColors = [
   Color(0xff0E3D51)
 ];
 // 0xff1F3864
-class clinic_appTheme {
+class ClinicAppTheme {
   static ThemeData get theme {
     // final themeData = ThemeData.light();
     // final textTheme = themeData.textTheme;
     // final body1 = textTheme.body1.copyWith(decorationColor: Colors.transparent);
 
     return ThemeData.light().copyWith(
-      primaryColor: Color(0xff0E3D51),
-      accentColor: Color(0xff0E3D51),
+      primaryColor: HexColor("#FF2970"),
+      accentColor: HexColor("#FF2970"),
       buttonColor: Color(0xff0E3D51),
       textSelectionColor: Color(0xff39556a),
       toggleableActiveColor: Color(0xff39556a),

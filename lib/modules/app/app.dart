@@ -1,3 +1,4 @@
+import 'package:clinic_app/pages/auth/login/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,10 +15,10 @@ import 'app_model.dart';
 import 'app_repository.dart';
 import 'app_theme.dart';
 
-class clinic_appApp extends StatelessWidget {
+class ClinicApp extends StatelessWidget {
   final AppRepository repository;
 
-  clinic_appApp({
+  ClinicApp({
     @required this.repository,
   });
 
@@ -37,7 +38,7 @@ class clinic_appApp extends StatelessWidget {
               var currentPage;
               switch (state) {
                 case AppState.unauthenticated:
-                  currentPage = LandingPage();
+                  currentPage = LoginPage();
                   break;
                 case AppState.not_completed:
                   currentPage = UserInfo();
@@ -56,7 +57,7 @@ class clinic_appApp extends StatelessWidget {
                     selector: (_, model) => model.specificLocalizationDelegate,
                     builder: (context, specificLocalizationDelegate, _) {
                       return MaterialApp(
-                          theme: clinic_appTheme.theme,
+                          theme: ClinicAppTheme.theme,
                           localizationsDelegates: [
                             GlobalMaterialLocalizations.delegate,
                             GlobalWidgetsLocalizations.delegate,

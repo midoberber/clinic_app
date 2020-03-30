@@ -140,9 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                                 child: CircularProgressIndicator(),
                               )
                             : submitButton(
-                                context,
+                                context:context,text:
                                 "Login",
-                                provider.loading
+                                onPress:provider.loading
                                     ? null
                                     : () {
                                         // call the login method .
