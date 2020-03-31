@@ -1,12 +1,15 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:clinic_app/components/drawer.dart';
+import 'package:clinic_app/pages/home/chating.dart';
+import 'package:clinic_app/pages/home/home.dart';
 import 'package:flutter/material.dart';
 
-class MainPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   PageController _pageController;
 
@@ -32,17 +35,17 @@ class _MainPageState extends State<MainPage> {
             setState(() => _currentIndex = index);
           },
           children: <Widget>[
-            Container(
-              color: Colors.yellow,
+            Home(),
+           ChatTwoPage(),
+            Scaffold(
+              body: Container(
+                color: Colors.green,
+              ),
             ),
-            Container(
-              color: Colors.black,
-            ),
-            Container(
-              color: Colors.green,
-            ),
-            Container(
-              color: Colors.blue,
+            Scaffold(
+              body: Container(
+                color: Colors.blue,
+              ),
             ),
           ],
         ),
@@ -60,8 +63,8 @@ class _MainPageState extends State<MainPage> {
             activeColor: Color(0xff0E3D51),
           ),
           BottomNavyBarItem(
-              title: Text('Hubs'),
-              icon: Icon(Icons.apps),
+              title: Text('Chats'),
+              icon: Icon(Icons.chat),
               activeColor: Color(0xff0E3D51)),
           BottomNavyBarItem(
               title: Text('Job Offers'),

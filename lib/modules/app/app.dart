@@ -1,4 +1,5 @@
 import 'package:clinic_app/pages/auth/login/login_page.dart';
+import 'package:clinic_app/pages/home/home_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,8 +9,6 @@ import 'package:clinic_app/locale/localizations.dart';
 import 'package:clinic_app/modules/app/app_entity.dart';
 import 'package:clinic_app/modules/graphql/with_gql.dart';
 import 'package:clinic_app/pages/user/user_info.dart';
-import 'package:clinic_app/pages/index.dart';
-import 'package:clinic_app/pages/landing/landing.dart';
 
 import 'app_model.dart';
 import 'app_repository.dart';
@@ -44,7 +43,7 @@ class ClinicApp extends StatelessWidget {
                   currentPage = UserInfo();
                   break;
                 case AppState.authenticated:
-                  currentPage = MainPage();
+                  currentPage = HomePage();
                   break;
                 default:
                   currentPage = Center(
