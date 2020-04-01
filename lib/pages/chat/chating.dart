@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:math';
 
 class ChatTwoPage extends StatefulWidget {
@@ -12,7 +11,7 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
   TextEditingController _controller;
   final List<String> avatars = [
     "assets/images/avatar.png",
-   "assets/images/avatar.png",
+    "assets/images/avatar.png",
   ];
   final List<Message> messages = [
     Message(0, "But I may not go if the weather is bad."),
@@ -35,11 +34,20 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Chat"),
-      ),
+      backgroundColor: Color(0xFF363846),
       body: Column(
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
+            child: Text(
+              'Name',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 26.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.separated(
               physics: BouncingScrollPhysics(),
@@ -71,10 +79,10 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(30.0),
       ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 8.0,
-        horizontal: 20.0,
-      ),
+      // padding: const EdgeInsets.symmetric(
+      //   vertical: 8.0,
+      //   horizontal: 20.0,
+      // ),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -93,10 +101,15 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
             ),
           ),
           IconButton(
+            icon: Icon(Icons.camera),
+            color: Colors.blue,
+            onPressed: () {},
+          ),
+          IconButton(
             icon: Icon(Icons.send),
-            color: Theme.of(context).primaryColor,
+            color: Colors.blue,
             onPressed: _save,
-          )
+          ),
         ],
       ),
     );
@@ -121,7 +134,7 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
         SizedBox(width: current ? 30.0 : 20.0),
         if (!current) ...[
           CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
+            backgroundImage: AssetImage(
               current ? avatars[0] : avatars[1],
             ),
             radius: 20.0,
@@ -134,7 +147,7 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
             horizontal: 16.0,
           ),
           decoration: BoxDecoration(
-              color: current ? Theme.of(context).primaryColor : Colors.white,
+              color: current ? Colors.blue : Colors.white,
               borderRadius: BorderRadius.circular(10.0)),
           child: Text(
             message.description,
@@ -145,7 +158,7 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
         if (current) ...[
           const SizedBox(width: 5.0),
           CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
+            backgroundImage: AssetImage(
               current ? avatars[0] : avatars[1],
             ),
             radius: 10.0,

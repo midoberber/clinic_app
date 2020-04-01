@@ -1,6 +1,9 @@
-import 'package:clinic_app/components/flat_appbar.dart';
-import 'package:day_selector/day_selector.dart';
+import 'dart:io';
+
+import 'package:chips_choice/chips_choice.dart';
+import 'package:clinic_app/components/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewAppointment extends StatefulWidget {
   @override
@@ -8,19 +11,35 @@ class NewAppointment extends StatefulWidget {
 }
 
 class _NewAppointmentState extends State<NewAppointment> {
-  int _noOfQuestions;
-  String _difficulty;
-  bool processing;
+  String dropdownValue;
+  int tag = 1;
+  int tag1 = 1;
 
-  @override
-  void initState() {
-    super.initState();
-    _noOfQuestions = 10;
-    _difficulty = "easy";
-    processing = false;
+  List<String> days = [
+    'Sunday',
+    'Saturday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+  ];
+  List<String> hour = [
+    "7am - 10am",
+    "11am - 2pm",
+    "3pm - 6pm",
+    "7pm-10pm",
+  ];
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
   }
 
-  DateTime _selectedValue = DateTime.now();
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfff0f0f0),
@@ -37,107 +56,102 @@ class _NewAppointmentState extends State<NewAppointment> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 5,
               itemBuilder: (BuildContext context, int) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                      child: Text(
-                        "First Session",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        "Select Day:",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ),
-                    DaySelector(
-                        value: null,
-                        onChange: (value) {},
-                        mode: DaySelector.modeFull),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text("Select Hour :"),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        runAlignment: WrapAlignment.center,
-                        runSpacing: 16.0,
-                        spacing: 16.0,
-                        children: <Widget>[
-                          SizedBox(width: 0.0),
-                          ActionChip(
-                            label: Text("10:10"),
-                            labelStyle: TextStyle(color: Colors.white),
-                            backgroundColor: _noOfQuestions == 10
-                                ? Colors.indigo
-                                : Colors.grey.shade600,
-                            onPressed: () => _selectNumberOfQuestions(10),
+                    elevation: 10,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Center(
+                          child: Text(
+                            "First Session",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          ActionChip(
-                            label: Text("20:20"),
-                            labelStyle: TextStyle(color: Colors.white),
-                            backgroundColor: _noOfQuestions == 20
-                                ? Colors.indigo
-                                : Colors.grey.shade600,
-                            onPressed: () => _selectNumberOfQuestions(20),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Selct Day :",
+                            style: TextStyle(color: Colors.blue, fontSize: 16),
                           ),
-                          ActionChip(
-                            label: Text("30:30"),
-                            labelStyle: TextStyle(color: Colors.white),
-                            backgroundColor: _noOfQuestions == 30
-                                ? Colors.indigo
-                                : Colors.grey.shade600,
-                            onPressed: () => _selectNumberOfQuestions(30),
+                        ),
+                        ChipsChoice<dynamic>.single(
+                          value: tag,
+                          options: ChipsChoiceOption.listFrom<dynamic, String>(
+                            source: days,
+                            value: (i, v) => i,
+                            label: (i, v) => v,
                           ),
-                          ActionChip(
-                            label: Text("40:40"),
-                            labelStyle: TextStyle(color: Colors.white),
-                            backgroundColor: _noOfQuestions == 40
-                                ? Colors.indigo
-                                : Colors.grey.shade600,
-                            onPressed: () => _selectNumberOfQuestions(40),
+                          onChanged: (val) {
+                            setState(() => tag = val);
+                            print(val);
+                            print(tag);
+                          },
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Selct Hour :",
+                            style: TextStyle(color: Colors.blue, fontSize: 16),
                           ),
-                          ActionChip(
-                            label: Text("50:50"),
-                            labelStyle: TextStyle(color: Colors.white),
-                            backgroundColor: _noOfQuestions == 50
-                                ? Colors.indigo
-                                : Colors.grey.shade600,
-                            onPressed: () => _selectNumberOfQuestions(50),
+                        ),
+                        ChipsChoice<dynamic>.single(
+                          value: tag1,
+                          options: ChipsChoiceOption.listFrom<dynamic, String>(
+                            source: hour,
+                            value: (i, v) => i,
+                            label: (i, v) => v,
                           ),
-                        ],
-                      ),
+                          onChanged: (valH) {
+                            setState(() => tag1 = valH);
+                            print(valH);
+                            print(tag);
+                          },
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Divider(
-                      height: 5,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                  ],
+                  ),
                 );
               },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            _image == null
+                ? FlatButton.icon(
+                    icon: Icon(Icons.add_a_photo),
+                    label: Text('select image to payment receipt'),
+                    onPressed: getImage,
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: Image.file(_image)),
+            SizedBox(
+              height: 15,
             ),
           ],
         )),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BorderButton(
+          callback: () {},
+          text: "Save",
+        ),
+      ),
     );
-  }
-
-  _selectNumberOfQuestions(int i) {
-    setState(() {
-      _noOfQuestions = i;
-    });
   }
 }

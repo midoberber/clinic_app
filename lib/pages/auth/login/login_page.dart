@@ -24,11 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   var loggedIn = false;
   // var firebaseAuth = FirebaseAuth.instance;
 
-  @override
-  void initState() {
-    passwordVisible = true;
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {

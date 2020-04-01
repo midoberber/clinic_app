@@ -1,3 +1,5 @@
+import 'package:clinic_app/components/drawer.dart';
+import 'package:clinic_app/pages/home/Confirmation.dart';
 import 'package:clinic_app/pages/home/current_dates.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,6 +26,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff696b9e),
+        elevation: 0.0,
+        title: Text("Welcome"),
+        centerTitle: true,
+      ),
+      drawer: LightDrawerPage(),
       backgroundColor: Color(0xfff0f0f0),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -63,11 +72,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       controller: _controller,
                       children: <Widget>[
                         CurrentDates(),
-                        Scaffold(
-                          body: Center(
-                            child: Text("data"),
-                          ),
-                        ),
+                        Confirmation(),
                         Scaffold(
                           body: Center(
                             child: Text("data"),
@@ -80,7 +85,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
             Container(
-              height: 160,
+              height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: primary,
@@ -123,22 +128,26 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           children: <Widget>[
             Text(
               "DR/Mahmoud Shaker",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             SizedBox(height: 10.0),
-            Text("Dietician and Obesity"),
+            Text("Dietician and Obesity",
+                style: TextStyle(color: Colors.white)),
             SizedBox(height: 5.0),
             Row(
               children: <Widget>[
                 Icon(
                   FontAwesomeIcons.locationArrow,
                   size: 12.0,
-                  color: Colors.black54,
+                  color: Colors.white,
                 ),
                 SizedBox(width: 10.0),
                 Text(
                   "Any Where",
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
