@@ -5,6 +5,7 @@ import 'package:clinic_app/components/email_field.dart';
 import 'package:clinic_app/components/password.dart';
 import 'package:clinic_app/pages/auth/activate.dart';
 import 'package:clinic_app/pages/auth/signup/signup_page.dart';
+import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/home/home_tabs.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   MaterialPageRoute(
                                                       builder: (BuildContext
                                                               context) =>
-                                                          HomePage()));
+                                                          Home()));
                                               _loginNow();
                                             }
                                           },

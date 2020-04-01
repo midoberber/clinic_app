@@ -1,4 +1,5 @@
 import 'package:clinic_app/pages/auth/login/login_page.dart';
+import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/home/home_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class ClinicApp extends StatelessWidget {
                   currentPage = UserInfo();
                   break;
                 case AppState.authenticated:
-                  currentPage = HomePage();
+                  currentPage = Home();
                   break;
                 default:
                   currentPage = Center(

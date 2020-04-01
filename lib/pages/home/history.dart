@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Confirmation extends StatefulWidget {
+class History extends StatefulWidget {
   @override
-  _ConfirmationState createState() => _ConfirmationState();
+  _HistoryState createState() => _HistoryState();
 }
 
-class _ConfirmationState extends State<Confirmation> {
+class _HistoryState extends State<History> {
   int _activeMeterIndex;
   final primary = Color(0xff696b9e);
   final secondary = Color(0xfff29a94);
@@ -31,10 +31,6 @@ class _ConfirmationState extends State<Confirmation> {
                         new ListTile(
                       title: Text("541"),
                       leading: Icon(FontAwesomeIcons.hashtag),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.close),
-                      ),
                     ),
                     body: Column(
                       children: <Widget>[

@@ -75,6 +75,7 @@ class _CurrentDatesState extends State<CurrentDates> {
               context, MaterialPageRoute(builder: (ctx) => NewAppointment()));
         },
         child: Icon(Icons.add),
+        backgroundColor: Color(0xff696b9e),
       ),
     );
   }
@@ -92,18 +93,7 @@ class _CurrentDatesState extends State<CurrentDates> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 50,
-            height: 50,
-            margin: EdgeInsets.only(right: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              border: Border.all(width: 3, color: secondary),
-              image: DecorationImage(
-                  image: AssetImage("assets/images/avatar.png"),
-                  fit: BoxFit.fill),
-            ),
-          ),
+        
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

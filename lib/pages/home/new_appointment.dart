@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:clinic_app/components/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewAppointment extends StatefulWidget {
@@ -45,7 +46,13 @@ class _NewAppointmentState extends State<NewAppointment> {
       backgroundColor: Color(0xfff0f0f0),
       appBar: AppBar(
         title: Text("New"),
-        backgroundColor: Color(0xfff0f0f0),
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.chevronLeft),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Color(0xff696b9e),
       ),
       body: SingleChildScrollView(
         child: Container(

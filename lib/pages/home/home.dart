@@ -1,6 +1,8 @@
 import 'package:clinic_app/components/drawer.dart';
+import 'package:clinic_app/pages/chat/chat_view.dart';
 import 'package:clinic_app/pages/home/Confirmation.dart';
 import 'package:clinic_app/pages/home/current_dates.dart';
+import 'package:clinic_app/pages/home/history.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -31,6 +33,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         elevation: 0.0,
         title: Text("Welcome"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (ctx) => ChatView()));
+            },
+            icon: Icon(Icons.chat),
+          ),
+        ],
       ),
       drawer: LightDrawerPage(),
       backgroundColor: Color(0xfff0f0f0),
@@ -40,7 +51,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         child: Stack(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 145),
+              padding: EdgeInsets.only(top: 60),
               height: MediaQuery.of(context).size.height,
               width: double.infinity,
               child: Column(
@@ -73,11 +84,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       children: <Widget>[
                         CurrentDates(),
                         Confirmation(),
-                        Scaffold(
-                          body: Center(
-                            child: Text("data"),
-                          ),
-                        ),
+                        History()
                       ],
                     ),
                   ),
@@ -85,7 +92,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
             ),
             Container(
-              height: 140,
+              height: 85,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: primary,
@@ -94,12 +101,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       bottomRight: Radius.circular(30))),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    _buildHeader(),
-                  ],
-                ),
+                child: _buildHeader(),
               ),
             ),
           ],
@@ -108,51 +110,53 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
-  Row _buildHeader() {
-    return Row(
+  Widget _buildHeader() {
+    return Column(
       children: <Widget>[
-        // SizedBox(width: 20.0),
-        Container(
-            // width: 80.0,
-            // height: 80.0,
-            child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.grey,
-                child: CircleAvatar(
-                    radius: 35.0,
-                    backgroundImage: AssetImage("assets/images/avatar.png")))),
-        SizedBox(width: 10.0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        Row(
           children: <Widget>[
-            Text(
-              "DR/Mahmoud Shaker",
-              style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            SizedBox(height: 10.0),
-            Text("Dietician and Obesity",
-                style: TextStyle(color: Colors.white)),
-            SizedBox(height: 5.0),
-            Row(
+            Container(
+                child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.grey,
+                    child: CircleAvatar(
+                        radius: 35.0,
+                        backgroundImage:
+                            AssetImage("assets/images/avatar.png")))),
+            SizedBox(width: 10.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  FontAwesomeIcons.locationArrow,
-                  size: 12.0,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 10.0),
                 Text(
-                  "Any Where",
-                  style: TextStyle(color: Colors.white),
+                  "DR/Mahmoud Shaker",
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                SizedBox(height: 10.0),
+                Text("Dietician and Obesity",
+                    style: TextStyle(color: Colors.white)),
+                SizedBox(height: 5.0),
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      FontAwesomeIcons.locationArrow,
+                      size: 12.0,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 10.0),
+                    Text(
+                      "Any Where",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
                 ),
               ],
-            ),
+            )
           ],
-        )
+        ),
       ],
     );
   }
