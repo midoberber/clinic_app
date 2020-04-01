@@ -37,7 +37,7 @@ class _PasswordField extends State<PasswordField> {
         key: widget.fieldKey,
         obscureText: _obsecureText,
         controller: widget.controller,
-        maxLength: 12,
+        maxLength: 13,
         onSaved: widget.onSave,
         onChanged: widget.onChange,
         // autovalidate: true,
@@ -56,12 +56,15 @@ class _PasswordField extends State<PasswordField> {
             hintText: widget.hintText,
             labelText: widget.labelText,
             helperText: widget.helperText,
+             labelStyle: TextStyle(
+            color: Colors.black,
+          ),
             filled: true,
             fillColor: Colors.white,
             focusColor: Colors.white,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            focusedBorder:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            // border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            // focusedBorder:
+            //     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             suffixIcon: new GestureDetector(
               onTap: () {
                 setState(() {
@@ -69,7 +72,7 @@ class _PasswordField extends State<PasswordField> {
                 });
               },
               child: new Icon(
-                  _obsecureText ? Icons.visibility : Icons.visibility_off),
+                  _obsecureText ? Icons.visibility : Icons.visibility_off,color: Colors.black,),
             )),
       ),
     );

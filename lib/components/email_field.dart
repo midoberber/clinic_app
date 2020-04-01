@@ -45,14 +45,14 @@ class _EmailFieldState extends State<EmailField> {
           labelText: widget.hintText,
           helperText: widget.helperText,
           labelStyle: TextStyle(
-            color: Colors.black54,
+            color: Colors.black,
           ),
           filled: true,
           fillColor: Colors.white,
           focusColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          focusedBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          // border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          // focusedBorder:
+          //     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
         textAlign: TextAlign.start,
         validator: (value) {

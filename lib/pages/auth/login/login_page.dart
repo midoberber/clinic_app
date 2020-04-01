@@ -8,6 +8,7 @@ import 'package:clinic_app/pages/auth/signup/signup_page.dart';
 import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/home/home_tabs.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../login/forgot_password.dart';
 
@@ -25,11 +26,10 @@ class _LoginPageState extends State<LoginPage> {
   var loggedIn = false;
   // var firebaseAuth = FirebaseAuth.instance;
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff0f0f0),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -139,7 +139,6 @@ class _LoginPageState extends State<LoginPage> {
                                 )
                               ]),
                         ),
-
                       ),
                     ),
                   ),
@@ -156,34 +155,58 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          InkWell(
-                            onTap: () {
-                              // authService.signInWithFacebook().then((user) {
-                              //   if (user?.uid != null) {
-                              //     Navigator.pop(context);
-                              //   }
-                              // });
-                            },
-                            child: Image.asset(
-                              'assets/images/fb.png',
-                              width: 150,
-                              height: 60,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FlatButton.icon(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              color: Colors.white,
+                              label: Text(
+                                "Log in with Facebook",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              icon: Icon(
+                                FontAwesomeIcons.facebookSquare,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {},
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              // authService.googleSignIn().then((user) {
-                              //   if (user?.uid != null) {
-                              //     Navigator.pop(context);
-                              //   }
-                              // });
-                            },
-                            child: Image.asset(
-                              'assets/images/google.png',
-                              width: 150,
-                              height: 60,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FlatButton.icon(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              color: Colors.white,
+                              label: Text(
+                                "Log in with Google",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              icon: Icon(
+                                FontAwesomeIcons.gofore,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {},
                             ),
                           ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     // authService.googleSignIn().then((user) {
+                          //     //   if (user?.uid != null) {
+                          //     //     Navigator.pop(context);
+                          //     //   }
+                          //     // });
+                          //   },
+                          //   child: Image.asset(
+                          //     'assets/images/google.png',
+                          //     width: 150,
+                          //     height: 60,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

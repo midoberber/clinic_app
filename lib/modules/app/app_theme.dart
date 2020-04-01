@@ -6,6 +6,7 @@ const gradiantColors = [
   Color(0xff006b7d),
   Color(0xff0E3D51)
 ];
+
 // 0xff1F3864
 class ClinicAppTheme {
   static ThemeData get theme {
@@ -14,22 +15,24 @@ class ClinicAppTheme {
     // final body1 = textTheme.body1.copyWith(decorationColor: Colors.transparent);
 
     return ThemeData.light().copyWith(
-      primaryColor: HexColor("#FF2970"),
-      accentColor: HexColor("#FF2970"),
-      buttonColor: Color(0xff0E3D51),
-      textSelectionColor: Color(0xff39556a),
-      toggleableActiveColor: Color(0xff39556a),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Color(0xff0E3D51),
-      ),
-      // snackBarTheme: SnackBarThemeData(
-      //   backgroundColor: themeData.dialogBackgroundColor,
-      //   contentTextStyle: body1,
-      //   actionTextColor: Color(0xff39556a),
-      // ),
-      // textTheme: textTheme.copyWith(
-      //   body1: body1,
-      // ),
-    );
+        backgroundColor: Color(0xfff0f0f0),
+        primaryColor: HexColor("#FF2970"),
+        accentColor: HexColor("#FF2970"),
+        buttonColor: Color(0xff0E3D51),
+        textSelectionColor: Color(0xff39556a),
+        toggleableActiveColor: Color(0xff39556a),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xff0E3D51),
+        ),
+        errorColor: Colors.black
+        // snackBarTheme: SnackBarThemeData(
+        //   backgroundColor: themeData.dialogBackgroundColor,
+        //   contentTextStyle: body1,
+        //   actionTextColor: Color(0xff39556a),
+        // ),
+        // textTheme: textTheme.copyWith(
+        //   body1: body1,
+        // ),
+        );
   }
 }
