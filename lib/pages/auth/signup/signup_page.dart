@@ -14,6 +14,10 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email;
   String _password;
   String _confirmPass;
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPass = TextEditingController();
 
   bool passwordVisible = true;
   bool confirmPassVisible = true;
@@ -67,6 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           //============================================= Name Box
 
                           _textField(
+                            controller: name,
                             labelText: "Name",
                             textValdiation: 'Please enter your name',
                             onChanged: ((String name) {
@@ -79,6 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           //============================================= Email Box
 
                           _textField(
+                            controller: email,
                             labelText: "Email Address",
                             textValdiation: 'Please enter your email address',
                             onChanged: ((String email) {
@@ -93,10 +99,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           PasswordField(
                             labelText: "Password",
+                            controller: password,
                           ),
                           //============================================= Password Box
                           PasswordField(
                             labelText: "Confirm Password",
+                            controller: confirmPass,
                           ),
                         ]),
                   ),
@@ -148,19 +156,23 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _textField(
-      {String labelText, String textValdiation, Function onChanged}) {
+      {String labelText,
+      String textValdiation,
+      Function onChanged,
+      TextEditingController controller}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: TextFormField(
+        controller: controller,
         onChanged: onChanged,
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
             color: Colors.black54,
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          focusedBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          // border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          // focusedBorder:
+          //     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
         textAlign: TextAlign.start,
         validator: (value) {
@@ -172,4 +184,5 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+  
 }

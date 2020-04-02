@@ -38,6 +38,9 @@ dependencies:
    path_provider: ^1.6.5
    firebase_core: ^0.4.4+3
    firebase_messaging: ^6.0.13
+   firebase_auth: ^0.15.5+3
+   google_sign_in: ^4.3.0
+
    font_awesome_flutter: ^8.8.1
    gender_selection: ^1.0.0
    flutter_svg: ^0.17.3+1

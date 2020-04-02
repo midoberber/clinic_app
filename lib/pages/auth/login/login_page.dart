@@ -7,8 +7,10 @@ import 'package:clinic_app/pages/auth/activate.dart';
 import 'package:clinic_app/pages/auth/signup/signup_page.dart';
 import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/home/home_tabs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../login/forgot_password.dart';
 
@@ -18,13 +20,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _email;
-  String _password;
+  // String _email;
+  // String _password;
   final _formKey = GlobalKey<FormState>();
-  bool passwordVisible = true;
-
-  var loggedIn = false;
-  // var firebaseAuth = FirebaseAuth.instance;
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +85,13 @@ class _LoginPageState extends State<LoginPage> {
 
                                 EmailField(
                                   hintText: "Email",
+                                  controller: _email,
                                 ),
                                 //============================================= Password Box
 
                                 PasswordField(
                                   labelText: "Password",
+                                  controller: _password,
                                 ),
 
                                 FittedBox(
@@ -129,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       builder: (BuildContext
                                                               context) =>
                                                           Home()));
+
                                               _loginNow();
                                             }
                                           },
@@ -190,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                                 FontAwesomeIcons.gofore,
                                 color: Colors.blue,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                _googleSignUp();
+                              },
                             ),
                           ),
                           // InkWell(
@@ -235,7 +240,6 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.black54),
                             ),
                             onPressed: () {
-                              Navigator.pop(context);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -277,5 +281,30 @@ class _LoginPageState extends State<LoginPage> {
     //     print('Result => ${data['message']}');
     //   });
     // });
+  }
+  Future<void> _googleSignUp() async {
+    try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn(
+        scopes: ['email'],
+      );
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final FirebaseUser user =
+          (await _auth.signInWithCredential(credential)).user;
+      print("signed in " + user.displayName);
+
+      return user;
+    } catch (e) {
+      print(e.message);
+    }
   }
 }
