@@ -32,7 +32,6 @@ dependencies:
    flutter_native_image: ^0.0.5+2
    timeago: ^2.0.26
    carousel_slider: ^1.4.1
-   video_player:
    photo_view: ^0.9.2
    country_code_picker: ^1.1.7
    path_provider: ^1.6.5
@@ -55,7 +54,7 @@ dev_dependencies:
    flutter_launcher_icons: ^0.7.4 
 
 flutter_icons:
-  image_path: "assets/images/mill.png"
+  image_path: "assets/images/logo.jpg"
   android: true
   ios: true
 

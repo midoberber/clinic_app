@@ -1,5 +1,6 @@
 import 'package:clinic_app/pages/auth/login/login_page.dart';
 import 'package:clinic_app/pages/auth/signup/pin_put.dart';
+import 'package:clinic_app/pages/auth/signup/select_gender_weight_age.dart';
 import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/home/home_tabs.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +43,7 @@ class ClinicApp extends StatelessWidget {
                   currentPage = LoginPage();
                   break;
                 case AppState.not_completed:
-                  currentPage = PinPutPage();
+                  currentPage = SelectGenderWeightAge();
                   break;
                 case AppState.authenticated:
                   currentPage = Home();

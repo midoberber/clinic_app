@@ -1,8 +1,10 @@
 import 'package:clinic_app/components/custom_button.dart';
 import 'package:clinic_app/components/password.dart';
+import 'package:clinic_app/modules/auth/register_model.dart';
 import 'package:clinic_app/pages/auth/signup/pin_put.dart';
 import 'package:clinic_app/pages/auth/signup/select_gender_weight_age.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -31,125 +33,133 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Account Registeration',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Text(
-                        '1/3',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //==================================== From Starts here
-                Container(
-                  padding: EdgeInsets.only(top: 10),
-                  color: Colors.white,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+    return ChangeNotifierProvider(
+      create: (_) => RegisterModel(),
+      child: Consumer<RegisterModel>(
+        builder: (ctx, provider, child) => Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          //============================================= Name Box
-
-                          _textField(
-                            controller: name,
-                            labelText: "Name",
-                            textValdiation: 'Please enter your name',
-                            onChanged: ((String name) {
-                              setState(() {
-                                _name = name;
-                                print(_name);
-                              });
-                            }),
+                          Text('Account Registeration',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Text(
+                            '1/3',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
                           ),
-                          //============================================= Email Box
+                        ],
+                      ),
+                    ),
 
-                          _textField(
-                            controller: email,
-                            labelText: "Email Address",
-                            textValdiation: 'Please enter your email address',
-                            onChanged: ((String email) {
-                              setState(() {
-                                _email = email;
-                                print(_email);
-                              });
-                            }),
-                          ),
+                    //==================================== From Starts here
+                    Container(
+                      padding: EdgeInsets.only(top: 10),
+                      color: Colors.white,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              //============================================= Name Box
 
-                          //============================================= Password Box
+                              _textField(
+                                controller: name,
+                                labelText: "Name",
+                                textValdiation: 'Please enter your name',
+                                onChanged: ((String name) {
+                                  setState(() {
+                                    _name = name;
+                                    print(_name);
+                                  });
+                                }),
+                              ),
+                              //============================================= Email Box
 
-                          PasswordField(
-                            labelText: "Password",
-                            controller: password,
-                          ),
-                          //============================================= Password Box
-                          PasswordField(
-                            labelText: "Confirm Password",
-                            controller: confirmPass,
-                          ),
-                        ]),
+                              _textField(
+                                controller: email,
+                                labelText: "Email Address",
+                                textValdiation:
+                                    'Please enter your email address',
+                                onChanged: ((String email) {
+                                  setState(() {
+                                    _email = email;
+                                    print(_email);
+                                  });
+                                }),
+                              ),
+
+                              //============================================= Password Box
+
+                              PasswordField(
+                                labelText: "Password",
+                                controller: password,
+                              ),
+                              //============================================= Password Box
+                              PasswordField(
+                                labelText: "Confirm Password",
+                                controller: confirmPass,
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.only(top: 130, bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FlatButton.icon(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  label: Text(
+                    'GO BACK',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
+                provider.loading
+                    ? CircularProgressIndicator()
+                    : CustomButton(
+                        text: 'NEXT',
+                        callback: () {
+                          if (_formKey.currentState.validate()) {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PinPutPage(),
+                              ),
+                            );
+                          }
+                        },
+                      )
               ],
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(top: 130, bottom: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            FlatButton.icon(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).primaryColor,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              label: Text(
-                'GO BACK',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            CustomButton(
-              text: 'NEXT',
-              callback: () {
-                if (_formKey.currentState.validate()) {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PinPutPage(),
-                    ),
-                  );
-                }
-              },
-            )
-          ],
         ),
       ),
     );
@@ -184,5 +194,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-  
 }
