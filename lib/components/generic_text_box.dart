@@ -11,7 +11,8 @@ class GenericTextField extends StatefulWidget {
       this.controller,
       this.maxLength,
       this.onValidate,
-      this.icon});
+      this.icon,
+      this.textInputType = TextInputType.text});
 
   final fieldKey;
   final String hintText;
@@ -23,7 +24,7 @@ class GenericTextField extends StatefulWidget {
   final TextEditingController controller;
   final int maxLength;
   final Icon icon;
-
+  final TextInputType textInputType;
   @override
   State<StatefulWidget> createState() {
     return _GenericTextField();
@@ -40,6 +41,7 @@ class _GenericTextField extends State<GenericTextField> {
       onSaved: widget.onSave,
       // autovalidate: true,
       validator: widget.onValidate,
+      keyboardType: widget.textInputType,
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: new InputDecoration(
         prefixIcon: widget.icon,

@@ -1,8 +1,9 @@
 
 import 'package:clinic_app/modules/utils/widget_utils.dart';
-import 'package:clinic_app/pages/auth/signup/card_title.dart';
-import 'package:clinic_app/pages/auth/signup/height/height_picker.dart';
 import 'package:flutter/material.dart';
+
+import '../card_title.dart';
+import 'height_picker.dart';
 
 class HeightCard extends StatelessWidget {
   final int height;

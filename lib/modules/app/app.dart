@@ -1,8 +1,7 @@
-import 'package:clinic_app/pages/auth/login/login_page.dart';
-import 'package:clinic_app/pages/auth/signup/pin_put.dart';
-import 'package:clinic_app/pages/auth/signup/select_gender_weight_age.dart';
+import 'package:clinic_app/pages/auth/activate.dart';
+import 'package:clinic_app/pages/auth/login_page.dart';
 import 'package:clinic_app/pages/home/home.dart';
-import 'package:clinic_app/pages/home/home_tabs.dart';
+import 'package:clinic_app/pages/user/update_user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,8 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:clinic_app/locale/localizations.dart';
 import 'package:clinic_app/modules/app/app_entity.dart';
 import 'package:clinic_app/modules/graphql/with_gql.dart';
-import 'package:clinic_app/pages/user/user_info.dart';
-
 import 'app_model.dart';
 import 'app_repository.dart';
 import 'app_theme.dart';
@@ -42,15 +39,21 @@ class ClinicApp extends StatelessWidget {
                 case AppState.unauthenticated:
                   currentPage = LoginPage();
                   break;
-                case AppState.not_completed:
-                  currentPage = SelectGenderWeightAge();
+                case AppState.notCompleted:
+                  currentPage = UpdateUserData();
+                  break;
+                case AppState.notVerified:
+                  currentPage = NotActivated();
                   break;
                 case AppState.authenticated:
                   currentPage = Home();
                   break;
                 default:
-                  currentPage = Center(
-                    child: CircularProgressIndicator(),
+                  currentPage = Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
               }
 

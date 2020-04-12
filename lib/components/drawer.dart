@@ -1,8 +1,9 @@
 import 'package:clinic_app/components/language_dialoge.dart';
 import 'package:clinic_app/components/log_out_dialog.dart';
+import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/utils/oval-right-clipper.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 
 class LightDrawerPage extends StatefulWidget {
   @override
@@ -44,9 +45,12 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                         color: active,
                       ),
                       onPressed: () {
-                          showDialog(
-                  context: context,
-                  builder: (context) => LogoutDialog(alertMessage: "Log Out"));
+                        Provider.of<AppStateModel>(context, listen: false)
+                            .unauthenticate();
+                        Navigator.pop(context);
+                        //         showDialog(
+                        // context: context,
+                        // builder: (context) => LogoutDialog(alertMessage: "Log Out"));
                       },
                     ),
                   ),
@@ -94,10 +98,9 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                   _buildRow(Icons.email, "Contact us"),
                   _buildDivider(),
                   _buildRow(Icons.exit_to_app, "Log Out", onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>
-                            LogoutDialog(alertMessage: "Log Out"));
+                    Provider.of<AppStateModel>(context, listen: false)
+                        .unauthenticate();
+                    Navigator.pop(context);
                   }),
                   _buildDivider(),
                 ],

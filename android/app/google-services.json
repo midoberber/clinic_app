@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "121289299206-mduv71vrddppfm8qe2nse44oequfudca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clinic.obesity",
+            "certificate_hash": "e6ed7f5ca16ecb873393c7513797dc39aba45ec6"
+          }
+        },
+        {
           "client_id": "121289299206-c2ql63omp2b723mkhod01m4t1oqt7jnb.apps.googleusercontent.com",
           "client_type": 3
         }

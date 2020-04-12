@@ -3,7 +3,8 @@ enum AppState {
   authenticated,
   unauthenticated,
   authenticating,
-  not_completed
+  notCompleted,
+  notVerified
 }
 
 class AppData {

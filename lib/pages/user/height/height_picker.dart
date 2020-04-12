@@ -2,10 +2,11 @@ import 'dart:math' as math;
 
 
 import 'package:clinic_app/modules/utils/widget_utils.dart';
-import 'package:clinic_app/pages/auth/signup/height/height_slider.dart';
-import 'package:clinic_app/pages/auth/signup/height/height_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'height_slider.dart';
+import 'height_styles.dart';
 
 
 class HeightPicker extends StatefulWidget {

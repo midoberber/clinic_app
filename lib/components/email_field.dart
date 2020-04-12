@@ -24,19 +24,12 @@ class EmailField extends StatefulWidget {
 }
 
 class _EmailFieldState extends State<EmailField> {
-  String _email;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10),
       child: TextFormField(
-        onChanged: ((String email) {
-          setState(() {
-            _email = email;
-            print(_email);
-          });
-        }),
+        keyboardType: TextInputType.emailAddress,
         key: widget.fieldKey,
         onSaved: widget.onSave,
         onFieldSubmitted: widget.onFieldSubmitted,
@@ -50,9 +43,6 @@ class _EmailFieldState extends State<EmailField> {
           filled: true,
           fillColor: Colors.white,
           focusColor: Colors.white,
-          // border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          // focusedBorder:
-          //     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
         textAlign: TextAlign.start,
         validator: (value) {

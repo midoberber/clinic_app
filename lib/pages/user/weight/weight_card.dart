@@ -1,41 +1,35 @@
-import 'package:clinic_app/modules/utils/widget_utils.dart'show screenAwareSize;
-import 'package:clinic_app/pages/auth/signup/card_title.dart';
-import 'package:clinic_app/pages/auth/signup/weight/weight_slider.dart';
+import 'package:clinic_app/modules/utils/widget_utils.dart'
+    show screenAwareSize;
+import 'package:clinic_app/pages/user/card_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'weight_slider.dart';
 
 class WeightCard extends StatelessWidget {
   final int weight;
-  final ValueChanged<int> onChanged;
+  final Function onChanged;
 
   const WeightCard({Key key, this.weight = 70, this.onChanged})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(
-        left: screenAwareSize(16.0, context),
-        right: screenAwareSize(4.0, context),
-        top: screenAwareSize(4.0, context),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CardTitle("WEIGHT", subtitle: "(kg)"),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenAwareSize(16.0, context)),
-                child: _drawSlider(),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        CardTitle("WEIGHT", subtitle: "(kg)"),
+        Expanded(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenAwareSize(16.0, context)),
+              child: _drawSlider(),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+ 
   }
 
   Widget _drawSlider() {
@@ -48,9 +42,8 @@ class WeightCard extends StatelessWidget {
                   minValue: 30,
                   maxValue: 110,
                   value: weight,
-                  onChanged: (val) => onChanged(val),
-                  width: constraints.maxWidth,
-                );
+                  onChanged: onChanged,
+                  width: constraints.maxWidth);
         },
       ),
     );

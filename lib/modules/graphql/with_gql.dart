@@ -9,8 +9,8 @@ class WithGraphQl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClientProvider(
-        uri: "https://sha5af.com/v1/graphql",
-        subscriptionUri: "ws://sha5af.com/v1/graphql",
+        uri: "http://206.189.238.178/v1/graphql",
+        subscriptionUri: "ws://206.189.238.178/v1/graphql",
         token: token,
         child: child);
   }

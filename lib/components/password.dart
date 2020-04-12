@@ -32,7 +32,7 @@ class _PasswordField extends State<PasswordField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10),
       child: new TextFormField(
         key: widget.fieldKey,
         obscureText: _obsecureText,

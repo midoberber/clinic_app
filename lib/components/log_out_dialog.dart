@@ -1,3 +1,4 @@
+import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,8 +58,8 @@ class LogoutDialog extends StatelessWidget {
                   icon: Icon(Icons.exit_to_app),
                   onPressed: () {
                     Navigator.pop(context);
-                    // store.setToken(null);
-                    // Provider.of<AppStore>(context).logout();
+                    Navigator.pop(context);
+               
                   },
                 )
               ],

@@ -1,7 +1,8 @@
 
 import 'package:clinic_app/modules/utils/widget_utils.dart';
-import 'package:clinic_app/pages/auth/signup/height/height_styles.dart';
 import 'package:flutter/material.dart';
+
+import 'height_styles.dart';
 
 class HeightSlider extends StatelessWidget {
   final int height;
