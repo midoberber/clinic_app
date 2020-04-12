@@ -48,6 +48,18 @@ class NotActivated extends StatelessWidget {
                 ),
                 onPressed: Provider.of<AppStateModel>(context, listen: false)
                     .verifyEmail),
+            SizedBox(
+              height: 20,
+            ),
+            FlatButton(
+                 color: Colors.transparent,
+                child: Text(
+                  "Sign out",
+                  style: TextStyle(
+                      fontSize: 15, color: Colors.grey),
+                ),
+                onPressed: Provider.of<AppStateModel>(context, listen: false)
+                    .unauthenticate,)
           ],
         ),
       )),

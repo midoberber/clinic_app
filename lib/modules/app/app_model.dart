@@ -35,8 +35,11 @@ class AppStateModel extends ChangeNotifier {
   UserEntity _userEntity;
   UserEntity get userEntity => _userEntity;
 
+  bool _loading;
+  bool get loading => _loading;
+
   bool _isRegisterdNotification = false;
-  
+
   AppStateModel({
     @required this.repository,
     AppState state,
@@ -50,7 +53,8 @@ class AppStateModel extends ChangeNotifier {
   Future signInWithGoogle(
     BuildContext context,
   ) async {
-    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAccount googleSignInAccount =
+        await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
@@ -64,7 +68,9 @@ class AppStateModel extends ChangeNotifier {
     // authResult.user.getIdToken();
     // Checking if email and name is null
 
-    _processOauthLogin(context, user.displayName, user.email, user.photoUrl);
+    String code = Localizations.localeOf(context).languageCode;
+
+    _processOauthLogin(code, user.displayName, user.email, user.photoUrl);
 
     // send them to the backend ..
 
@@ -87,7 +93,9 @@ class AppStateModel extends ChangeNotifier {
             'https://graph.facebook.com/v2.12/me?fields=name,picture.width(200).height(200),email&access_token=${token}');
         final profile = json.decode(graphResponse.body);
         // send to the oauth server api ..
-        _processOauthLogin(context, profile["name"], profile["email"],
+        String code = Localizations.localeOf(context).languageCode;
+
+        _processOauthLogin(code, profile["name"], profile["email"],
             profile["picture"]["data"]["url"]);
         break;
       case FacebookLoginStatus.cancelledByUser:
@@ -104,6 +112,8 @@ class AppStateModel extends ChangeNotifier {
   Future handleSignInEmail(
       BuildContext context, String email, String password) async {
     try {
+      _loading = true;
+      notifyListeners();
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       final FirebaseUser user = result.user;
@@ -111,15 +121,21 @@ class AppStateModel extends ChangeNotifier {
       assert(user.uid == currentUser.uid);
 
       print('signInEmail succeeded: $user');
-      _processOauthLogin(context, "", email, "");
+      String code = Localizations.localeOf(context).languageCode;
+      _loading = false;
+      notifyListeners();
+      _processOauthLogin(code, "", email, "");
     } catch (e) {
-      Toast.show("Invalid Email or Password", context,
+      Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
   Future handleSignUp(BuildContext context, email, password) async {
     try {
+            _loading = true;
+      notifyListeners();
+
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       final FirebaseUser user = result.user;
@@ -128,9 +144,12 @@ class AppStateModel extends ChangeNotifier {
         // navigate to the verify your email
         await user.sendEmailVerification();
       }
+      String code = Localizations.localeOf(context).languageCode;
+            _loading = false;
+      notifyListeners();
+ 
       Navigator.pop(context);
-
-      _processOauthLogin(context, "", email, "");
+      _processOauthLogin(code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -138,7 +157,7 @@ class AppStateModel extends ChangeNotifier {
   }
 
   _processOauthLogin(
-      BuildContext context, String name, String email, String avatar) async {
+      String languageCode, String name, String email, String avatar) async {
     // update the user in the database ...
     print("Enter authenticate .. ");
     var response = await http.post('http://206.189.238.178:3000/authenticate',
@@ -149,18 +168,20 @@ class AppStateModel extends ChangeNotifier {
         }),
         headers: {'content-type': 'application/json'});
     // returns a JWT and meta data
-    print(response.body);
-    print(response.statusCode);
     dynamic responseDecoded = json.decode(response.body);
 
     var user = new UserEntity(
-        displayName: name, id: responseDecoded["id"], photoUrl: avatar);
+      displayName: name,
+      id: responseDecoded["id"],
+      photoUrl: avatar,
+    );
 
     var appData = AppData(
-        isCompleted: responseDecoded["isCompleted"],
-        token: responseDecoded["token"],
-        languageCode: Localizations.localeOf(context).languageCode,
-        isWheelEnabled: false);
+      isCompleted: responseDecoded["isCompleted"],
+      token: responseDecoded["token"],
+      languageCode: languageCode,
+      isWheelEnabled: false,
+    );
     // auth the app .
     authenticate(appData, user);
     // app complete its cycle ..
@@ -168,8 +189,7 @@ class AppStateModel extends ChangeNotifier {
 
   void load() async {
     _state = AppState.uninitialized;
-    // await _auth.signOut();
-    // await unauthenticate();
+    notifyListeners();
     var user = repository.loadUser();
     AppData data = repository.loadAppData();
 
@@ -202,7 +222,7 @@ class AppStateModel extends ChangeNotifier {
     if (data.token.isNullOrEmpty()) {
       _state = AppState.unauthenticated;
     }
- 
+
     _state = AppState.authenticated;
 
     notifyListeners();
@@ -283,10 +303,11 @@ class AppStateModel extends ChangeNotifier {
 
   void verifyEmail() async {
     final FirebaseUser currentUser = await _auth.currentUser();
-    if (currentUser != null && currentUser.isEmailVerified) {
-      _state = AppState.notCompleted;
-    }
-    notifyListeners();
+    await currentUser.reload();
+    this.load();
+    // if (currentUser != null && currentUser.isEmailVerified) {
+    //   // _state = AppState.authenticated;
+    // }
   }
 
   void authenticate(

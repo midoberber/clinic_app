@@ -83,12 +83,12 @@ class _CurrentDatesState extends State<CurrentDates> {
   Widget buildList(BuildContext context, int index) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(15),
         color: Colors.white,
       ),
       width: double.infinity,
-      height: 110,
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      // height: 110,
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

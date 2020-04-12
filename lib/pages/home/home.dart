@@ -125,7 +125,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             AssetImage("assets/images/avatar.png")))),
             SizedBox(width: 10.0),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(

@@ -88,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               context,
                               duration: Toast.LENGTH_LONG,
                               gravity: Toast.BOTTOM);
+                              return;
                         }
                         if (email.text.isNotEmpty && password.text.isNotEmpty) {
                           Provider.of<AppStateModel>(context, listen: false)
