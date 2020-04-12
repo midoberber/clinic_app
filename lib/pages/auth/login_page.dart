@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                               .handleSignInEmail(
                                   context, email.text, password.text);
                         } else {
-                          Toast.show(
+                           Toast.show(
                               "Please Enter your email and password ", context,
                               duration: Toast.LENGTH_LONG,
                               gravity: Toast.BOTTOM);
