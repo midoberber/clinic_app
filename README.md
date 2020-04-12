@@ -13,16 +13,25 @@ Social Media Platform .
 
 
 
+# for faceboook 
+
 generate development hash key : 
 keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl base64
 
 
 generate releas hash key : 
-keytool -exportcert -alias "alias of keystore" -keystore "Your path to the keystore when signing app" | openssl sha1 -binary | openssl base64
+keytool -exportcert -alias clinic -keystore ~/key.jks | openssl sha1 -binary | openssl base64
 
 
-
+# for firebase 
 get sha1 , sha256 keys .. 
 
 
 keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+
+# for releas key generation 
+
+generate a release key store .. 
+keytool -genkey -v -keystore ~/key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias clinic
+pass : 123456
