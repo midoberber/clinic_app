@@ -19,7 +19,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.grey),
         title: Text(
-          'FORGOT PASSWORD',
+          'Forget Password',
           style: TextStyle(color: Colors.grey),
         ),
       ),
@@ -57,7 +57,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       FlatButton(
                         padding: const EdgeInsets.symmetric(
@@ -65,7 +65,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         shape: StadiumBorder(),
                         color: Colors.white,
                         child: Text(
-                          "Send Code",
+                          "Send Reset Link",
                           style: TextStyle(
                               fontSize: 15,
                               color: Theme.of(context).accentColor),

@@ -53,7 +53,7 @@ class _ChatTwoPageState extends State<ChatTwoPage> {
               physics: BouncingScrollPhysics(),
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 10.0);
-              },
+              }, 
               reverse: true,
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
