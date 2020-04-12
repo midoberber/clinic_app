@@ -36,8 +36,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (ctx) => ChatView()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (ctx) => ChatView()));
             },
             icon: Icon(Icons.chat),
           ),

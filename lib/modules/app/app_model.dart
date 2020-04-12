@@ -131,7 +131,7 @@ class AppStateModel extends ChangeNotifier {
 
   Future handleSignUp(BuildContext context, email, password) async {
     try {
-            _loading = true;
+      _loading = true;
       notifyListeners();
 
       AuthResult result = await _auth.createUserWithEmailAndPassword(
@@ -143,14 +143,30 @@ class AppStateModel extends ChangeNotifier {
         await user.sendEmailVerification();
       }
       String code = Localizations.localeOf(context).languageCode;
-            _loading = false;
+      _loading = false;
       notifyListeners();
- 
+
       Navigator.pop(context);
       _processOauthLogin(code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String email) async {
+    try {
+      _loading = true;
+      notifyListeners();
+      await _auth.sendPasswordResetEmail(email: email);
+      _loading = false;
+      notifyListeners();
+
+      Navigator.pop(context);
+    } catch (e) {
+      Toast.show(e.message.toString(), context,
+          duration: 3, gravity: Toast.BOTTOM);
+      print("Email Error");
     }
   }
 
