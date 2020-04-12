@@ -82,8 +82,6 @@ class AppStateModel extends ChangeNotifier {
   }
 
   Future signInWithFacebook(BuildContext context) async {
-    _facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
-
     final result = await _facebookLogin.logIn(['email']);
 
     switch (result.status) {
@@ -94,7 +92,7 @@ class AppStateModel extends ChangeNotifier {
         final profile = json.decode(graphResponse.body);
         // send to the oauth server api ..
         String code = Localizations.localeOf(context).languageCode;
-
+        print(profile["name"]);
         _processOauthLogin(code, profile["name"], profile["email"],
             profile["picture"]["data"]["url"]);
         break;
