@@ -1,0 +1,114 @@
+import 'package:clinic_app/components/expanded_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+class CurrentDayDoctor extends StatefulWidget {
+  @override
+  _CurrentDayDoctorState createState() => _CurrentDayDoctorState();
+}
+
+class _CurrentDayDoctorState extends State<CurrentDayDoctor> {
+
+  final primary = Color(0xff696b9e);
+  final secondary = Color(0xfff29a94);
+  @override
+  Widget build(BuildContext context) {
+    return ExpandedWidget(
+        itemCount: 5,
+        header: ListTile(
+          title: Text(
+            "Khairy Mohamed",
+            style: TextStyle(fontSize: 17),
+          ),
+          leading: CircleAvatar(
+            backgroundImage: AssetImage("assets/images/avatar.png"),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(
+                Icons.timer,
+                color: secondary,
+                size: 20,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text("6:30",
+                  style: TextStyle(
+                      color: primary, fontSize: 13, letterSpacing: .3)),
+            ],
+          ),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Divider(
+              height: 10,
+              color: Colors.black,
+            ),
+            ListTile(
+              title: Text(
+                "First Session",
+                style: TextStyle(
+                    color: primary, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              subtitle: Row(
+                children: <Widget>[
+                  // SizedBox(
+                  //   width: 8,
+                  // ),
+                  Icon(
+                    Icons.date_range,
+                    color: secondary,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text("sun 22/3/2020",
+                      style: TextStyle(
+                          color: primary, fontSize: 13, letterSpacing: .3)),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Icon(
+                    Icons.timer,
+                    color: secondary,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text("from 6:30 to 6:45",
+                      style: TextStyle(
+                          color: primary, fontSize: 13, letterSpacing: .3)),
+                ],
+              ),
+              trailing: GestureDetector(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.refresh,
+                      color: secondary,
+                      size: 25,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("Delay",
+                        style: TextStyle(
+                            color: primary, fontSize: 17, letterSpacing: .3)),
+                  ],
+                ),
+                onTap: () {},
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+          ],
+        ));
+  }
+}

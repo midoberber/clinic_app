@@ -1,5 +1,6 @@
 import 'package:clinic_app/components/language_dialoge.dart';
 import 'package:clinic_app/components/log_out_dialog.dart';
+import 'package:clinic_app/doctor/home_doctor.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/utils/oval-right-clipper.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,12 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                     "Chanage Password",
                   ),
                   _buildDivider(),
-                  _buildRow(Icons.settings, "Settings"),
+                  _buildRow(Icons.settings, "Settings", onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => HomeDoctor()));
+                  }),
                   _buildDivider(),
                   _buildRow(Icons.email, "Contact us"),
                   _buildDivider(),

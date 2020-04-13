@@ -56,15 +56,18 @@ class UserInfoModel extends ChangeNotifier {
   void next(BuildContext context) async {
     if (controller.page == 2) {
  
-       // GraphQLClient _client = GraphQLProvider.of(context)?.value;
-      // var res = await _client
-      //     .mutate(MutationOptions(documentNode: gql("query"), variables: {}));
+       GraphQLClient _client = GraphQLProvider.of(context)?.value;
+      var res = await _client
+          .mutate(MutationOptions(documentNode: gql("query"), variables: {
 
-      // if (res.exception != null) {
-      //   Toast.show("Something Wrong happned , please try again", context,
-      //       duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      //   return;
-      // }
+            
+          }));
+
+      if (res.exception != null) {
+        Toast.show("Something Wrong happned , please try again", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        return;
+      }
       Provider.of<AppStateModel>(context , listen: false).completeInfo();
     } else {
       if (controller.page == 0 && nameController.text.isEmpty) {
