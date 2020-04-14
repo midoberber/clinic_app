@@ -10,9 +10,7 @@ class _CurrentDatesState extends State<CurrentDates> {
   final TextStyle dropdownMenuItem =
       TextStyle(color: Colors.black, fontSize: 18);
 
-  final primary = Color(0xff696b9e);
-  final secondary = Color(0xfff29a94);
-
+ 
   final List<Map> list = [
     {
       "name": "First Session",
@@ -59,104 +57,8 @@ class _CurrentDatesState extends State<CurrentDates> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xfff0f0f0),
-      body: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              child: buildList(context, index),
-              onTap: () {},
-            );
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (ctx) => NewAppointment()));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xff696b9e),
-      ),
-    );
+    
   }
 
-  Widget buildList(BuildContext context, int index) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-      ),
-      width: double.infinity,
-      // height: 110,
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-        
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  list[index]['name'],
-                  style: TextStyle(
-                      color: primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.date_range,
-                      color: secondary,
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(list[index]['date'],
-                        style: TextStyle(
-                            color: primary, fontSize: 13, letterSpacing: .3)),
-                  ],
-                ),
-                SizedBox(
-                  height: 6,
-                ),
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.timer,
-                      color: secondary,
-                      size: 20,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(list[index]['time'],
-                        style: TextStyle(
-                            color: primary, fontSize: 13, letterSpacing: .3)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(Icons.replay),
-              SizedBox(
-                height: 10,
-              ),
-              Text("state")
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  
 }

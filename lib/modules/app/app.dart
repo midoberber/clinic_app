@@ -40,7 +40,9 @@ class ClinicApp extends StatelessWidget {
                   currentPage = LoginPage();
                   break;
                 case AppState.notCompleted:
-                  currentPage = UpdateUserData();
+                  currentPage = UpdateUserData(
+                    isNew: true,
+                  );
                   break;
                 case AppState.notVerified:
                   currentPage = NotActivated();

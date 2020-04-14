@@ -197,8 +197,6 @@ class _NewAppointmentState extends State<NewAppointment> {
               ),
               onChanged: (valH) {
                 setState(() => tag1 = valH);
-                print(valH);
-                print(tag);
               },
             ),
             SizedBox(
@@ -209,7 +207,6 @@ class _NewAppointmentState extends State<NewAppointment> {
               child: ListTile(
                 leading: Icon(FontAwesomeIcons.diceFour),
                 trailing:Text("12-18/5"),
-
                 title: Text(
                   "Fourth Week",
                   style: TextStyle(
@@ -217,7 +214,6 @@ class _NewAppointmentState extends State<NewAppointment> {
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
-                // trailing: IconButton(icon: Icon(Icons.settings , color: Colors.grey[400], size: 22,), onPressed: (){}, ),
               ),
             ),
             ChipsChoice<dynamic>.single(
@@ -229,8 +225,6 @@ class _NewAppointmentState extends State<NewAppointment> {
               ),
               onChanged: (val) {
                 setState(() => tag = val);
-                print(val);
-                print(tag);
               },
             ),
             SizedBox(

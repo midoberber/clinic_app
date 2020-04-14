@@ -70,8 +70,8 @@ class UserInfo extends StatelessWidget {
                     provider.birthDate = await showDatePicker(
                         // builder: (_, d) => Text("Date"),
                         initialDate: provider.birthDate ?? DateTime(2003),
-                        firstDate: DateTime(1970),
-                        lastDate: DateTime(2003),
+                        firstDate: DateTime(1960),
+                        lastDate: DateTime.now(),
                         context: context);
                   },
                   leading: const Icon(Icons.calendar_today),

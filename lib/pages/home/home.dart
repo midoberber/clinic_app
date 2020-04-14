@@ -63,23 +63,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     controller: _controller,
                     tabs: [
                       new Tab(
-                        // icon: const Icon(Icons.home),
-                        text: 'Current dates',
+                        text: 'Ongoing',
                       ),
                       new Tab(
-                        text: 'Confirmation',
+                        text: 'Pending',
                       ),
                       new Tab(
-                        text: 'History',
+                        text: 'Archiev',
                       ),
                     ],
                     labelColor: Theme.of(context).primaryColor,
                     indicatorColor: Theme.of(context).primaryColor,
                     unselectedLabelColor: Colors.black,
                   ),
-                  new Expanded(
+                  Expanded(
                     // height: 120.0,
-                    child: new TabBarView(
+                    child: TabBarView(
                       controller: _controller,
                       children: <Widget>[
                         CurrentDates(),
@@ -97,10 +96,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               decoration: BoxDecoration(
                   color: primary,
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30))),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: _buildHeader(),
               ),
             ),
@@ -116,26 +115,28 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         Row(
           children: <Widget>[
             Container(
-                child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey,
-                    child: CircleAvatar(
-                        radius: 35.0,
-                        backgroundImage:
-                            AssetImage("assets/images/avatar.png")))),
-            SizedBox(width: 10.0),
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/avatar.png"),
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            SizedBox(width: 15.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "DR/Mahmoud Shaker",
+                  "Dr / Mahmoud Shaker",
                   style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
                 Text("Dietician and Obesity",
                     style: TextStyle(color: Colors.white)),
                 SizedBox(height: 5.0),
