@@ -1,8 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clinic_app/components/language_dialoge.dart';
 import 'package:clinic_app/components/log_out_dialog.dart';
 import 'package:clinic_app/doctor/home_doctor.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/utils/oval-right-clipper.dart';
+import 'package:clinic_app/pages/home/my_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,9 +48,10 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                         color: active,
                       ),
                       onPressed: () {
-                        Provider.of<AppStateModel>(context, listen: false)
-                            .unauthenticate();
-                        Navigator.pop(context);
+                        _dialog_log_out();
+                        // Provider.of<AppStateModel>(context, listen: false)
+                        //     .unauthenticate();
+                        // Navigator.pop(context);
                         //         showDialog(
                         // context: context,
                         // builder: (context) => LogoutDialog(alertMessage: "Log Out"));
@@ -82,7 +85,12 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                   SizedBox(height: 30.0),
                   _buildRow(Icons.home, "Home"),
                   _buildDivider(),
-                  _buildRow(Icons.person_pin, "My profile"),
+                  _buildRow(Icons.person_pin, "My profile", onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MyProfile()));
+                  }),
                   _buildDivider(),
                   _buildRow(Icons.language, "Chanage language", onPressed: () {
                     showDialog(
@@ -104,9 +112,10 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                   _buildRow(Icons.email, "Contact us"),
                   _buildDivider(),
                   _buildRow(Icons.exit_to_app, "Log Out", onPressed: () {
-                    Provider.of<AppStateModel>(context, listen: false)
-                        .unauthenticate();
-                    Navigator.pop(context);
+                    _dialog_log_out();
+                    // Provider.of<AppStateModel>(context, listen: false)
+                    //     .unauthenticate();
+                    // Navigator.pop(context);
                   }),
                   _buildDivider(),
                 ],
@@ -116,6 +125,28 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
         ),
       ),
     );
+  }
+
+  _dialog_log_out() {
+    return AwesomeDialog(
+        context: context,
+        animType: AnimType.SCALE,
+        dialogType: DialogType.INFO,
+        body: Center(
+          child: Text(
+            'Are You Sure ',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        tittle: 'This is Ignored',
+        desc: 'This is also Ignored',
+        btnOkOnPress: () {
+          Provider.of<AppStateModel>(context, listen: false).unauthenticate();
+          Navigator.pop(context);
+        },
+        btnCancelOnPress: () {
+          Navigator.pop(context);
+        }).show();
   }
 
   Divider _buildDivider() {

@@ -93,7 +93,6 @@ class _CurrentDatesState extends State<CurrentDates> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-        
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,14 +144,19 @@ class _CurrentDatesState extends State<CurrentDates> {
             ),
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.replay),
-              SizedBox(
-                height: 10,
+              Icon(
+                Icons.refresh,
+                color: secondary,
+                size: 25,
               ),
-              Text("state")
+              SizedBox(
+                height: 5,
+              ),
+              Text("State",
+                  style: TextStyle(
+                      color: primary, fontSize: 17, letterSpacing: .3)),
             ],
           ),
         ],

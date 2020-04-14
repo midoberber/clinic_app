@@ -1,4 +1,6 @@
 import 'package:clinic_app/components/expanded_widget.dart';
+import 'package:clinic_app/components/language_dialoge.dart';
+import 'package:clinic_app/doctor/delay_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,7 +10,6 @@ class CurrentDayDoctor extends StatefulWidget {
 }
 
 class _CurrentDayDoctorState extends State<CurrentDayDoctor> {
-
   final primary = Color(0xff696b9e);
   final secondary = Color(0xfff29a94);
   @override
@@ -102,7 +103,10 @@ class _CurrentDayDoctorState extends State<CurrentDayDoctor> {
                             color: primary, fontSize: 17, letterSpacing: .3)),
                   ],
                 ),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context, builder: (context) => DelayDailog());
+                },
               ),
             ),
             SizedBox(
