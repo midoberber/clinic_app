@@ -1,4 +1,5 @@
 import 'package:clinic_app/components/expanded_widget.dart';
+import 'package:clinic_app/doctor/delay_dailog.dart';
 import 'package:flutter/material.dart';
 
 class AllDateDoctor extends StatefulWidget {
@@ -123,7 +124,11 @@ class _AllDateDoctorState extends State<AllDateDoctor> {
                                   letterSpacing: .3)),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => DelayDailog());
+                      },
                     ),
                   ),
                   SizedBox(

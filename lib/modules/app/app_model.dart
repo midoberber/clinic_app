@@ -17,6 +17,9 @@ import 'app_entity.dart';
 import 'app_repository.dart';
 
 class AppStateModel extends ChangeNotifier {
+
+  final String doctorId = "325a72d1-3ac7-48c3-8fed-7c9e5464a8ee";
+  
   final AppRepository repository;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 

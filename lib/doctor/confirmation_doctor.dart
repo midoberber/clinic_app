@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clinic_app/components/expanded_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -24,34 +25,52 @@ class ConfirmationDoctorState extends State<ConfirmationDoctor> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.close,
-                    color: secondary,
-                    size: 25,
-                  ),
-                  Text("Close",
-                      style: TextStyle(
-                          color: secondary, fontSize: 13, letterSpacing: .3)),
-                ],
+              GestureDetector(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.close,
+                      color: secondary,
+                      size: 25,
+                    ),
+                    Text("Close",
+                        style: TextStyle(
+                            color: secondary, fontSize: 13, letterSpacing: .3)),
+                  ],
+                ),
+                onTap: () {
+                  _dialogAwosome(
+                      dialogType: DialogType.ERROR,
+                      text: "Are You Sure close",
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () {});
+                },
               ),
               SizedBox(
                 width: 15,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.done,
-                    color: primary,
-                    size: 25,
-                  ),
-                  Text("Done",
-                      style: TextStyle(
-                          color: primary, fontSize: 13, letterSpacing: .3)),
-                ],
+              GestureDetector(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.done,
+                      color: primary,
+                      size: 25,
+                    ),
+                    Text("Done",
+                        style: TextStyle(
+                            color: primary, fontSize: 13, letterSpacing: .3)),
+                  ],
+                ),
+                onTap: () {
+                  _dialogAwosome(
+                      dialogType: DialogType.SUCCES,
+                      text: "Are You Sure done",
+                      btnOkOnPress: () {},
+                      btnCancelOnPress: () {});
+                },
               ),
             ],
           ),
@@ -175,5 +194,27 @@ class ConfirmationDoctorState extends State<ConfirmationDoctor> {
             )
           ],
         ));
+  }
+
+  _dialogAwosome(
+      {DialogType dialogType,
+      String text,
+      Function btnOkOnPress,
+      Function btnCancelOnPress}) {
+    return AwesomeDialog(
+            context: context,
+            // animType: AnimType.SCALE,
+            dialogType: dialogType,
+            body: Center(
+              child: Text(
+                text,
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            tittle: 'This is Ignored',
+            desc: 'This is also Ignored',
+            btnOkOnPress: btnOkOnPress,
+            btnCancelOnPress: btnCancelOnPress)
+        .show();
   }
 }

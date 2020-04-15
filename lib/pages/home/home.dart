@@ -3,6 +3,7 @@ import 'package:clinic_app/pages/chat/chat_view.dart';
 import 'package:clinic_app/pages/home/Confirmation.dart';
 import 'package:clinic_app/pages/home/current_dates.dart';
 import 'package:clinic_app/pages/home/history.dart';
+import 'package:clinic_app/pages/home/new_appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -105,6 +106,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (ctx) => NewAppointment()));
+        },
       ),
     );
   }

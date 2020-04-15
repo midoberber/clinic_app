@@ -5,13 +5,13 @@ import 'package:dospace/dospace.dart' as dospace;
 class FileUploader {
   static dospace.Spaces spaces = new dospace.Spaces(
     region: "fra1",
-    accessKey: "6L7D3WJW7FMFZX7T5UWJ",
-    secretKey: "l7YZd8hnKqh+I9CvwpbGxhtrWp/lMWbNcTIFikUK0wA",
+    accessKey: "T2OKKXAYR7PGAT2WAW32",
+    secretKey: "TmiqHRBp0ww3BcrZ3R92sTGv4HM7U2uCbeaHVqB1ftU",
   );
 
   static Future<dynamic> uploadFile(
       String fileName, File file, String type) async {
-    dospace.Bucket bucket = spaces.bucket("shaghaph");
+    dospace.Bucket bucket = spaces.bucket("clinic");
 
     try {
       String etag = await bucket.uploadFile(

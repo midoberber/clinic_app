@@ -1,4 +1,3 @@
-import 'package:clinic_app/pages/home/new_appointment.dart';
 import 'package:flutter/material.dart';
 
 class CurrentDates extends StatefulWidget {
