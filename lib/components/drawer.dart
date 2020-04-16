@@ -1,10 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clinic_app/components/language_dialoge.dart';
-import 'package:clinic_app/components/log_out_dialog.dart';
-import 'package:clinic_app/doctor/home_doctor.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/utils/oval-right-clipper.dart';
-import 'package:clinic_app/pages/home/my_profile.dart';
+import 'package:clinic_app/pages/user/update_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,10 +22,11 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildDrawer();
+    return _buildDrawer(context);
   }
 
-  _buildDrawer() {
+  _buildDrawer(BuildContext context) {
+    var user = Provider.of<AppStateModel>(context).userEntity;
     return ClipPath(
       clipper: OvalRightBorderClipper(),
       child: Drawer(
@@ -67,29 +66,27 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                             colors: [Colors.orange, Colors.deepOrange])),
                     child: CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage("assets/images/avatar.png"),
+                      backgroundImage: user.photoUrl.isEmpty
+                          ? AssetImage("assets/images/avatar.png")
+                          : NetworkImage(user.photoUrl),
                     ),
                   ),
                   SizedBox(height: 5.0),
                   Text(
-                    "Name Account",
+                    user.displayName,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    "@mido07",
-                    style: TextStyle(color: active, fontSize: 16.0),
-                  ),
                   SizedBox(height: 30.0),
-                  _buildRow(Icons.home, "Home"),
-                  _buildDivider(),
-                  _buildRow(Icons.person_pin, "My profile", onPressed: () {
+                  _buildRow(Icons.settings, "Profile Settings", onPressed: () {
+                    Navigator.pop(context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => MyProfile()));
+                            builder: (BuildContext context) =>
+                                UpdateUserData()));
                   }),
                   _buildDivider(),
                   _buildRow(Icons.language, "Chanage language", onPressed: () {
@@ -101,15 +98,6 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                     Icons.security,
                     "Chanage Password",
                   ),
-                  _buildDivider(),
-                  _buildRow(Icons.settings, "Settings", onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => HomeDoctor()));
-                  }),
-                  _buildDivider(),
-                  _buildRow(Icons.email, "Contact us"),
                   _buildDivider(),
                   _buildRow(Icons.exit_to_app, "Log Out", onPressed: () {
                     _dialog_log_out();

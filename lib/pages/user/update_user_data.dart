@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UpdateUserData extends StatelessWidget {
+  final bool isNew;
+
+  const UpdateUserData({Key key, this.isNew = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => UserInfoModel(),
+      create: (_) => UserInfoModel()..init(context, isNew),
       child: Consumer<UserInfoModel>(
         builder: (_, model, __) => Scaffold(
           appBar: AppBar(

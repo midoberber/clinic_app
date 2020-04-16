@@ -2,7 +2,7 @@ import 'package:clinic_app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 
 const primary = Color(0xffFF2970); 
-// final secondary = Color(0xfff29a94);
+final secondary = Color(0xfff29a94);
 
 const gradiantColors = [
  primary,
