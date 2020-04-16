@@ -69,7 +69,6 @@ class _NewAppointmentState extends State<NewAppointment> {
       backgroundColor: Color(0xfff0f0f0),
       appBar: AppBar(
         title: Text("Reserve New Appointment"),
-      
         backgroundColor: Color(0xff696b9e),
       ),
       body: ChangeNotifierProvider(
@@ -78,8 +77,8 @@ class _NewAppointmentState extends State<NewAppointment> {
           builder: (context, provider, child) => SingleChildScrollView(
             child: Container(
                 child:
-                Muita
-                 Column(
+                    // Muita
+                    Column(
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -214,7 +213,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                 SizedBox(
                   height: 15,
                 ),
-                BorderButton( 
+                BorderButton(
                   callback: () {},
                   text: "Submit Appointment",
                 ),
