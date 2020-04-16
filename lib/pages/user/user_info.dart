@@ -1,3 +1,4 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,8 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:clinic_app/components/generic_image_picker.dart';
 import 'package:clinic_app/components/generic_text_box.dart';
 import 'package:clinic_app/modules/users/user_info_model.dart';
+import 'package:intl/intl.dart';
 
 class UserInfo extends StatelessWidget {
+  final format = DateFormat("yyyy-MM-dd");
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoModel>(
@@ -64,6 +68,22 @@ class UserInfo extends StatelessWidget {
                 labelText: "Your Address",
                 icon: Icon(Icons.map),
               ),
+
+              // DateTimeField(
+              //   format: format,
+              //   decoration: InputDecoration(
+              //     labelText: "Choose your Birthdate",
+              //     prefixIcon: Icon(Icons.calendar_today),
+              //   ),
+              //   onShowPicker: (context, currentValue) {
+              //     return showDatePicker(
+              //         context: context,
+              //         firstDate: DateTime(1970),
+              //         initialDate: currentValue ?? DateTime.now(),
+              //         lastDate: DateTime(2003));
+              //   },
+              // ),
+
               // SizedBox(height: 30),
               ListTile(
                   onTap: () async {
