@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clinic_app/components/language_dialoge.dart';
+import 'package:clinic_app/doctor/home_doctor.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/utils/oval-right-clipper.dart';
 import 'package:clinic_app/pages/user/update_user_data.dart';
@@ -94,10 +95,12 @@ class _LightDrawerPageState extends State<LightDrawerPage> {
                         context: context, builder: (context) => MyForm());
                   }),
                   _buildDivider(),
-                  _buildRow(
-                    Icons.security,
-                    "Chanage Password",
-                  ),
+                  _buildRow(Icons.security, "Chanage Password", onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => HomeDoctor()));
+                  }),
                   _buildDivider(),
                   _buildRow(Icons.exit_to_app, "Log Out", onPressed: () {
                     _dialog_log_out();
