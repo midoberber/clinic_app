@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:clinic_app/components/custom_button.dart';
 import 'package:clinic_app/modules/appointments/new_appointment_model.dart';
+import 'package:clinic_app/modules/utils/datetimeHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -13,39 +14,7 @@ class NewAppointment extends StatefulWidget {
 }
 
 class _NewAppointmentState extends State<NewAppointment> {
-  getTimeFormated(TimeOfDay time) {
-    MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    if (time != null) {
-      String formattedTime =
-          localizations.formatTimeOfDay(time, alwaysUse24HourFormat: false);
-      return formattedTime;
-    }
-  }
 
-  List enDays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ];
-
-  List arDays = [
-    "الأثنين",
-    "الثلاثاء",
-    "الأربعاء",
-    "الخميس",
-    "الجمعة",
-    "السبت",
-    "الأحد"
-  ];
-
-  String getDayName(DateTime dat) {
-    print(dat.weekday);
-    return enDays[dat.weekday - 1];
-  }
 
   _buildAppointMentRow(
       String date, String time, Function onSelectDate, Function onSelectTime) {
@@ -76,9 +45,7 @@ class _NewAppointmentState extends State<NewAppointment> {
         child: Consumer<NewAppointmentModel>(
           builder: (context, provider, child) => SingleChildScrollView(
             child: Container(
-                child:
-                    // Muita
-                    Column(
+                child: Column(
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -102,7 +69,8 @@ class _NewAppointmentState extends State<NewAppointment> {
                         : "${getDayName(provider.startDate)} ${provider.startDate.toString().split(' ')[0]}"),
                     (provider.startTime == null
                         ? "Tab to Choose Time"
-                        : getTimeFormated(provider.startTime)),
+                        : getTimeFormated(
+                            context, provider.startTime)),
                     () => provider.selectDate(context),
                     () => provider.selectTime(context)),
 
@@ -126,7 +94,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                       : "${getDayName(provider.startDate.add(Duration(days: 7)))} ${provider.startDate.add(Duration(days: 7)).toString().split(' ')[0]}"),
                   (provider.startTime == null
                       ? "--:--"
-                      : getTimeFormated(provider.startTime)),
+                      : getTimeFormated(context, provider.startTime)),
                   null,
                   null,
                 ),
@@ -154,7 +122,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                       : "${getDayName(provider.startDate.add(Duration(days: 14)))} ${provider.startDate.add(Duration(days: 14)).toString().split(' ')[0]}"),
                   (provider.startTime == null
                       ? "--:--"
-                      : getTimeFormated(provider.startTime)),
+                      : getTimeFormated(context, provider.startTime)),
                   null,
                   null,
                 ),
@@ -180,7 +148,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                       : "${getDayName(provider.startDate.add(Duration(days: 21)))} ${provider.startDate.add(Duration(days: 21)).toString().split(' ')[0]}"),
                   (provider.startTime == null
                       ? "--:--"
-                      : getTimeFormated(provider.startTime)),
+                      : getTimeFormated(context, provider.startTime)),
                   null,
                   null,
                 ),
@@ -214,7 +182,9 @@ class _NewAppointmentState extends State<NewAppointment> {
                   height: 15,
                 ),
                 BorderButton(
-                  callback: () {},
+                  callback: () {
+                    provider.save(context);
+                  },
                   text: "Submit Appointment",
                 ),
               ],

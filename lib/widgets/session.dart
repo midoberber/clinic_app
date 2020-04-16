@@ -1,4 +1,5 @@
 import 'package:clinic_app/modules/app/app_theme.dart';
+import 'package:clinic_app/modules/utils/datetimeHelpers.dart';
 import 'package:flutter/material.dart';
 
 class Session extends StatelessWidget {
@@ -7,6 +8,7 @@ class Session extends StatelessWidget {
   const Session({Key key, this.session}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    List<String> timeSegments = session["session_time"].toString().split(":");
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -23,7 +25,7 @@ class Session extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'name',
+                  "${session["session_index"].toString().toUpperCase()} SESSION",
                   style: TextStyle(
                       color: primary,
                       fontWeight: FontWeight.bold,
@@ -60,7 +62,7 @@ class Session extends StatelessWidget {
                     SizedBox(
                       width: 5,
                     ),
-                    Text('time',
+                    Text(getTimeFormated(context,TimeOfDay(hour:int.parse(timeSegments[0]) , minute:  int.parse(timeSegments[1])) ),
                         style: TextStyle(
                             color: primary, fontSize: 13, letterSpacing: .3)),
                   ],
@@ -72,11 +74,11 @@ class Session extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.replay),
+              Icon(Icons.warning),
               SizedBox(
                 height: 10,
               ),
-              Text("state")
+              Text(session["session_status"])
             ],
           ),
         ],

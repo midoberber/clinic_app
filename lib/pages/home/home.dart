@@ -4,6 +4,7 @@ import 'package:clinic_app/pages/home/Confirmation.dart';
 import 'package:clinic_app/pages/home/current_dates.dart';
 import 'package:clinic_app/pages/home/history.dart';
 import 'package:clinic_app/pages/home/new_appointment.dart';
+import 'package:clinic_app/widgets/reservation_by_status_query.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -82,8 +83,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     child: TabBarView(
                       controller: _controller,
                       children: <Widget>[
-                        CurrentDates(),
-                        Confirmation(),
+                        ReservationByStatusQuery(
+                          status: "accepted",
+                        ),
+                        ReservationByStatusQuery(),
                         History()
                       ],
                     ),

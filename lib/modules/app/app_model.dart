@@ -17,9 +17,8 @@ import 'app_entity.dart';
 import 'app_repository.dart';
 
 class AppStateModel extends ChangeNotifier {
-
   final String doctorId = "325a72d1-3ac7-48c3-8fed-7c9e5464a8ee";
-  
+
   final AppRepository repository;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -55,8 +54,6 @@ class AppStateModel extends ChangeNotifier {
   Future signInWithGoogle(
     BuildContext context,
   ) async {
-    _state = AppState.uninitialized;
-    notifyListeners();
     try {
       final GoogleSignInAccount googleSignInAccount =
           await _googleSignIn.signIn();
@@ -74,7 +71,7 @@ class AppStateModel extends ChangeNotifier {
 
       String code = Localizations.localeOf(context).languageCode;
 
-      _processOauthLogin(code, user.displayName, user.email, user.photoUrl);
+      _processOauthLogin(context,code, user.displayName, user.email, user.photoUrl);
     } catch (e) {
       _state = AppState.unauthenticated;
       notifyListeners();
@@ -83,8 +80,6 @@ class AppStateModel extends ChangeNotifier {
 
   Future signInWithFacebook(BuildContext context) async {
     final result = await _facebookLogin.logIn(['email']);
-    _state = AppState.uninitialized;
-    notifyListeners();
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final token = result.accessToken.token;
@@ -93,19 +88,14 @@ class AppStateModel extends ChangeNotifier {
         final profile = json.decode(graphResponse.body);
         // send to the oauth server api ..
         String code = Localizations.localeOf(context).languageCode;
-        print(profile["name"]);
-        _processOauthLogin(code, profile["name"], profile["email"],
+        _processOauthLogin(context,code, profile["name"], profile["email"],
             profile["picture"]["data"]["url"]);
         break;
       case FacebookLoginStatus.cancelledByUser:
-        _state = AppState.unauthenticated;
-        notifyListeners();
         Toast.show("Canceled Login", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
         break;
       case FacebookLoginStatus.error:
-        _state = AppState.unauthenticated;
-        notifyListeners();
         Toast.show("Something Wrong happend, Cann't login", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
         break;
@@ -127,7 +117,7 @@ class AppStateModel extends ChangeNotifier {
       String code = Localizations.localeOf(context).languageCode;
       _loading = false;
       notifyListeners();
-      _processOauthLogin(code, "", email, "");
+      _processOauthLogin(context,code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -152,7 +142,7 @@ class AppStateModel extends ChangeNotifier {
       notifyListeners();
 
       Navigator.pop(context);
-      _processOauthLogin(code, "", email, "");
+      _processOauthLogin(context,code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -175,10 +165,11 @@ class AppStateModel extends ChangeNotifier {
     }
   }
 
-  _processOauthLogin(
-      String languageCode, String name, String email, String avatar) async {
+  _processOauthLogin(BuildContext context, String languageCode, String name,
+      String email, String avatar) async {
     // update the user in the database ...
     print("Enter authenticate .. ");
+
     var response = await http.post('http://206.189.238.178:3000/authenticate',
         body: json.encode({
           "email": email,
@@ -187,22 +178,29 @@ class AppStateModel extends ChangeNotifier {
         }),
         headers: {'content-type': 'application/json'});
     // returns a JWT and meta data
-    dynamic responseDecoded = json.decode(response.body);
+    try {
+      dynamic responseDecoded = json.decode(response.body);
 
-    var user = new UserEntity(
-      displayName: name,
-      id: responseDecoded["id"],
-      photoUrl: avatar,
-    );
+      var user = new UserEntity(
+        displayName: name,
+        id: responseDecoded["id"],
+        photoUrl: avatar,
+      );
 
-    var appData = AppData(
-      isCompleted: responseDecoded["isCompleted"],
-      token: responseDecoded["token"],
-      languageCode: languageCode,
-      isWheelEnabled: false,
-    );
-    // auth the app .
-    authenticate(appData, user);
+      var appData = AppData(
+        isCompleted: responseDecoded["isCompleted"],
+        token: responseDecoded["token"],
+        languageCode: languageCode,
+        isWheelEnabled: false,
+      );
+      // auth the app .
+      authenticate(appData, user);
+    } catch (e) {
+      Toast.show(response.body.toString(), context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+      unauthenticate();
+    }
     // app complete its cycle ..
   }
 
