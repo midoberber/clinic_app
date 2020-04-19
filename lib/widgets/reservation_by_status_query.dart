@@ -47,15 +47,23 @@ class ReservationByStatusQuery extends StatelessWidget {
         }
         var reservation = reservations[0];
         print("$reservation");
-        return   SessionList(
-              sessions: reservation["reservation_sessions"],
-              last: status == "pending"
-                  ? Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: Image.network(reservation["payment_image"]))
-                  : null,
-            );
+
+        return ListView.builder(
+            itemCount: reservations.length, itemBuilder: (_, index) {
+              
+
+              // return 
+            });
+
+        return SessionList(
+          sessions: reservation["reservation_sessions"],
+          last: status == "pending"
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  child: Image.network(reservation["payment_image"]))
+              : null,
+        );
       },
     );
   }

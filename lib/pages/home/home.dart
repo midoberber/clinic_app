@@ -100,8 +100,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               decoration: BoxDecoration(
                   color: primary,
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0),
-                      bottomRight: Radius.circular(0))),
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30))),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: _buildHeader(),
