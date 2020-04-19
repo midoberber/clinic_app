@@ -2,12 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:clinic_app/components/expanded_widget.dart';
 import 'package:flutter/material.dart';
 
-class ConfirmationDoctor extends StatefulWidget {
+class Pending extends StatefulWidget {
   @override
-  ConfirmationDoctorState createState() => ConfirmationDoctorState();
+  PendingState createState() => PendingState();
 }
 
-class ConfirmationDoctorState extends State<ConfirmationDoctor> {
+class PendingState extends State<Pending> {
   final primary = Color(0xff696b9e);
   final secondary = Color(0xfff29a94);
   @override

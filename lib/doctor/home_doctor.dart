@@ -27,7 +27,7 @@ class _HomeDoctorState extends State<HomeDoctor>
   @override
   void initState() {
     super.initState();
-    _controller = new TabController(length: 4, vsync: this);
+    _controller = new TabController(length: 3, vsync: this);
   }
 
   @override
@@ -69,16 +69,13 @@ class _HomeDoctorState extends State<HomeDoctor>
                     tabs: [
                       new Tab(
                         // icon: const Icon(Icons.home),
-                        text: 'Current Day',
+                        text: 'Open',
                       ),
                       new Tab(
-                        text: 'Confirmation',
+                        text: 'Pending',
                       ),
                       new Tab(
-                        text: 'All date',
-                      ),
-                      new Tab(
-                        text: 'History',
+                        text: 'Archive',
                       ),
                     ],
                     labelColor: Theme.of(context).primaryColor,
@@ -90,9 +87,8 @@ class _HomeDoctorState extends State<HomeDoctor>
                     child: new TabBarView(
                       controller: _controller,
                       children: <Widget>[
-                        CurrentDayDoctor(),
-                        ConfirmationDoctor(),
-                        AllDateDoctor(),
+                        Open(),
+                        Pending(),
                         History()
                       ],
                     ),
