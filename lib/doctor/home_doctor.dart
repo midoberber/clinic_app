@@ -1,7 +1,7 @@
 import 'package:clinic_app/components/drawer.dart';
 import 'package:clinic_app/doctor/all_date_doctor.dart';
-import 'package:clinic_app/doctor/confirmation_doctor.dart';
-import 'package:clinic_app/doctor/current_day_doctor.dart';
+import 'package:clinic_app/doctor/open.dart';
+import 'package:clinic_app/doctor/pending.dart';
 import 'package:clinic_app/pages/chat/chat_view.dart';
 import 'package:clinic_app/pages/home/Confirmation.dart';
 import 'package:clinic_app/pages/home/current_dates.dart';
