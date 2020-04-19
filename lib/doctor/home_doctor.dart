@@ -1,6 +1,3 @@
-import 'package:clinic_app/doctor/all_date_doctor.dart';
-import 'package:clinic_app/doctor/confirmation_doctor.dart';
-import 'package:clinic_app/doctor/current_day_doctor.dart';
 import 'package:clinic_app/pages/home/history.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
