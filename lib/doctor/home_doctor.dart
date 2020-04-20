@@ -1,3 +1,5 @@
+import 'package:clinic_app/doctor/open.dart';
+import 'package:clinic_app/doctor/pending.dart';
 import 'package:clinic_app/pages/home/history.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
