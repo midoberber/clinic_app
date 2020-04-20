@@ -30,6 +30,7 @@ const getPatientReservationByStatus = """
 query getPendingReservation(\$patientId: uuid!, \$reservateionStatus: reservation_status_enum!) {
   reservation(where: {patient_id: {_eq: \$patientId}, reservation_status: {_eq: \$reservateionStatus}}) {
     payment_image
+    created_at
     reservation_sessions {
       session_date
       session_index
