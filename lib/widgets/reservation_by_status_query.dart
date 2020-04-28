@@ -3,8 +3,10 @@ import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/graphql/reservations_queries.dart';
 import 'package:clinic_app/widgets/sessions_list.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ReservationByStatusQuery extends StatefulWidget {
   final String status;
@@ -20,14 +22,14 @@ class ReservationByStatusQuery extends StatefulWidget {
 }
 
 class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
-  int _selectedIndex = -1;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(
           documentNode: gql(getPatientReservationByStatus),
-          pollInterval: 10,
+          pollInterval: 5,
           variables: {
             "patientId": Provider.of<AppStateModel>(context, listen: false)
                 .userEntity
@@ -35,7 +37,7 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
             "reservateionStatus": widget.status
           }),
       builder: (result, {fetchMore, refetch}) {
-        if (result.loading)
+        if (result.loading && result.data == null)
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         if (result.exception != null) {
           print(result.exception.toString());
@@ -56,31 +58,39 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
             onPressed: refetch,
           );
         }
-        print("$reservations");
+        Locale currentLocale = Localizations.localeOf(context);
         return SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(4),
             child: ExpansionPanelList(
               expansionCallback: (int index, bool isExpanded) {
-                if (isExpanded) {
-                  setState(() {
-                    _selectedIndex = -1;
-                  });
-                } else {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                }
+                setState(() {
+                  _selectedIndex = index;
+                });
               },
               children: reservations.map<ExpansionPanel>((dynamic item) {
                 return ExpansionPanel(
                   headerBuilder: (BuildContext context, bool isExpanded) {
+                    var since = timeago.format(
+                        DateTime.parse(item["created_at"]),
+                        locale:
+                            currentLocale.languageCode == "en" ? 'en' : 'ar');
                     return ListTile(
-                      title: Text(item["created_at"]),
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = reservations.indexOf(item);
+                        });
+                      },
+                      leading: Icon(FontAwesomeIcons.ticketAlt),
+                      title: Text(
+                          "Reservation # ${reservations.indexOf(item) + 1}"),
+                      subtitle: Text("Submited since $since"),
                     );
                   },
                   body: SessionList(
                     sessions: item["reservation_sessions"],
+                    showStatus: widget.status != "pending" &&
+                        widget.status != "declined",
                     last: widget.status == "pending"
                         ? [
                             Container(
@@ -93,30 +103,35 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  RaisedButton(
-                                    color: Colors.red,
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(color: Colors.white),
+                                  Expanded(
+                                    child: RaisedButton(
+                                      color: Colors.red,
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        // cancel this reservation ...
+                                      },
                                     ),
-                                    onPressed: () {
-                                      // cancel this reservation ...
-                                    },
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 3,
                                   ),
-                                  RaisedButton(
-                                    color: Colors.blueAccent,
-                                    child: Text(
-                                      "Accept",
-                                      style: TextStyle(color: Colors.white),
+                                  Expanded(
+                                    child: RaisedButton(
+                                      color: Colors.blueAccent,
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        // cancel this reservation ...
+                                      },
                                     ),
-                                    onPressed: () {
-                                      // cancel this reservation ...
-                                    },
                                   )
                                 ],
                               ),

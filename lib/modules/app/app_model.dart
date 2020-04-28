@@ -71,7 +71,8 @@ class AppStateModel extends ChangeNotifier {
 
       String code = Localizations.localeOf(context).languageCode;
 
-      _processOauthLogin(context,code, user.displayName, user.email, user.photoUrl);
+      _processOauthLogin(
+          context, code, user.displayName, user.email, user.photoUrl);
     } catch (e) {
       _state = AppState.unauthenticated;
       notifyListeners();
@@ -88,7 +89,7 @@ class AppStateModel extends ChangeNotifier {
         final profile = json.decode(graphResponse.body);
         // send to the oauth server api ..
         String code = Localizations.localeOf(context).languageCode;
-        _processOauthLogin(context,code, profile["name"], profile["email"],
+        _processOauthLogin(context, code, profile["name"], profile["email"],
             profile["picture"]["data"]["url"]);
         break;
       case FacebookLoginStatus.cancelledByUser:
@@ -117,7 +118,7 @@ class AppStateModel extends ChangeNotifier {
       String code = Localizations.localeOf(context).languageCode;
       _loading = false;
       notifyListeners();
-      _processOauthLogin(context,code, "", email, "");
+      _processOauthLogin(context, code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -142,7 +143,7 @@ class AppStateModel extends ChangeNotifier {
       notifyListeners();
 
       Navigator.pop(context);
-      _processOauthLogin(context,code, "", email, "");
+      _processOauthLogin(context, code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -180,12 +181,20 @@ class AppStateModel extends ChangeNotifier {
     // returns a JWT and meta data
     try {
       dynamic responseDecoded = json.decode(response.body);
+      GraphQLClient _client = GraphQLProvider.of(context)?.value;
+
+      var result = await _client.query(
+          QueryOptions(documentNode: gql("""query getIsDoctor(\$id:uuid!) {
+                user_by_pk(id: \$id) {
+                  isDoctor
+                }
+              }"""), variables: {"id": responseDecoded["id"]}));
 
       var user = new UserEntity(
-        displayName: name,
-        id: responseDecoded["id"],
-        photoUrl: avatar,
-      );
+          displayName: name,
+          id: responseDecoded["id"],
+          photoUrl: avatar,
+          isDoctor: result.data["user_by_pk"]["isDoctor"]);
 
       var appData = AppData(
         isCompleted: responseDecoded["isCompleted"],

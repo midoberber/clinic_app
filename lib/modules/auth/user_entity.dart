@@ -2,8 +2,9 @@ class UserEntity {
   final String id;
   final String displayName;
   final String photoUrl;
+  final bool isDoctor;
 
-  UserEntity({this.id, this.displayName, this.photoUrl});
+  UserEntity({this.isDoctor, this.id, this.displayName, this.photoUrl});
 
   @override
   bool operator ==(Object other) =>
@@ -25,19 +26,22 @@ class UserEntity {
   dynamic toJson() => {
         "id": this.id,
         "displayName": this.displayName,
-        "photoUrl": this.photoUrl
+        "photoUrl": this.photoUrl,
+        "isDoctor": this.isDoctor
       };
 
   UserEntity compyWith({String displayName, String photo}) {
     return UserEntity(
         id: this.id,
         displayName: displayName ?? this.displayName,
+        isDoctor: this.isDoctor,
         photoUrl: photo ?? this.photoUrl);
   }
 
   static UserEntity fromJson(Map<String, dynamic> json) {
     return UserEntity(
       id: json['id'] as String,
+      isDoctor: json['isDoctor'] as bool,
       displayName: json['displayName'] as String,
       photoUrl: json['photoUrl'] as String,
     );

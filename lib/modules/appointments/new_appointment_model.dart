@@ -18,11 +18,8 @@ class NewAppointmentModel extends ChangeNotifier {
     // GraphQLClient _client =
     // GraphQLClient _client = GraphQLProvider.of(context)?.value;
     // var result = await _client.query(QueryOptions(documentNode: gql("""
-    
     // """)));
-
     // var data = result.data[""];
-
     // _minFrom
   }
 

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class SessionList extends StatelessWidget {
   final List sessions;
   final List<Widget> last;
-  const SessionList({Key key, this.sessions, this.last}) : super(key: key);
+  final bool showStatus;
+  const SessionList({Key key, this.sessions, this.last, this.showStatus = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class SessionList extends StatelessWidget {
       children: <Widget>[
         ...sessions
             .map((dynamic item) => Session(
+                  showStatus: showStatus,
                   session: item,
                 ))
             .toList(),
