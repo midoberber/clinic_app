@@ -52,9 +52,9 @@ class ClinicApp extends StatelessWidget {
                 case AppState.authenticated:
                   currentPage = Home();
                   break;
-                case AppState.authenticated_doctor:
-                  currentPage = HomeDoctor();
-                  break;
+                // case AppState.authenticated_doctor:
+                //   currentPage = HomeDoctor();
+                //   break;
                 default:
                   currentPage = LoadingState();
               }

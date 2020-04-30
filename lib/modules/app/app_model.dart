@@ -333,9 +333,11 @@ class AppStateModel extends ChangeNotifier {
     print(newUser.isDoctor);
     await repository.store.setUser(newUser);
     _userEntity = newUser;
-    _state = newUser.isDoctor
-        ? AppState.authenticated_doctor
-        : AppState.authenticated;
+    _state = 
+    // newUser.isDoctor
+    //     ? AppState.authenticated_doctor
+    //     :
+         AppState.authenticated;
     notifyListeners();
   }
 
