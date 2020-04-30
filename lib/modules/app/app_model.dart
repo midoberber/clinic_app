@@ -13,6 +13,7 @@ import 'package:clinic_app/modules/auth/user_entity.dart';
 import 'package:clinic_app/modules/utils/extentions.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import '../auth/user_entity.dart';
 import 'app_entity.dart';
 import 'app_repository.dart';
 
@@ -143,7 +144,7 @@ class AppStateModel extends ChangeNotifier {
       notifyListeners();
 
       Navigator.pop(context);
-      _processOauthLogin(context, code, "", email, "" , authType: "register");
+      _processOauthLogin(context, code, "", email, "", authType: "register");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -167,33 +168,23 @@ class AppStateModel extends ChangeNotifier {
   }
 
   _processOauthLogin(BuildContext context, String languageCode, String name,
-      String email, String avatar ,{ String authType="login"}) async {
+      String email, String avatar,
+      {String authType = "login"}) async {
     // update the user in the database ...
     print("Enter authenticate .. ");
 
     var response = await http.post('http://206.189.238.178:3000/authenticate',
-        body: json.encode({
-          "email": email,
-          "authType":  authType
-        }),
+        body: json.encode({"email": email, "authType": authType}),
         headers: {'content-type': 'application/json'});
     // returns a JWT and meta data
     try {
       dynamic responseDecoded = json.decode(response.body);
-      GraphQLClient _client = GraphQLProvider.of(context)?.value;
-
-      var result = await _client.query(
-          QueryOptions(documentNode: gql("""query getIsDoctor(\$id:uuid!) {
-                user_by_pk(id: \$id) {
-                  isDoctor
-                }
-              }"""), variables: {"id": responseDecoded["id"]}));
 
       var user = new UserEntity(
           displayName: name,
           id: responseDecoded["id"],
           photoUrl: avatar,
-          isDoctor: result.data["user_by_pk"]["isDoctor"]);
+          isDoctor: false);
 
       var appData = AppData(
         isCompleted: responseDecoded["isCompleted"],
@@ -204,6 +195,7 @@ class AppStateModel extends ChangeNotifier {
       // auth the app .
       authenticate(appData, user);
     } catch (e) {
+      print(e.toString());
       Toast.show(response.body.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
 
@@ -248,7 +240,7 @@ class AppStateModel extends ChangeNotifier {
       _state = AppState.unauthenticated;
     }
 
-    _state = AppState.authenticated;
+    _state = AppState.uninitialized;
 
     notifyListeners();
   }
@@ -324,6 +316,27 @@ class AppStateModel extends ChangeNotifier {
     AppData data = repository.loadAppData();
     await repository.store.setAppData(data.compyWith(isCompleted: true));
     this.load();
+  }
+
+  void getUserType(BuildContext context) async {
+    GraphQLClient _client = GraphQLProvider.of(context)?.value;
+    var user = repository.loadUser();
+
+    var result = await _client
+        .query(QueryOptions(documentNode: gql("""query getIsDoctor(\$id:uuid!) {
+                user_by_pk(id: \$id) {
+                  isDoctor
+                }
+              }"""), variables: {"id": user.id}));
+    UserEntity newUser =
+        user.compyWith(isDoctor: result.data["user_by_pk"]["isDoctor"]);
+    print(newUser.isDoctor);
+    await repository.store.setUser(newUser);
+    _userEntity = newUser;
+    _state = newUser.isDoctor
+        ? AppState.authenticated_doctor
+        : AppState.authenticated;
+    notifyListeners();
   }
 
   void verifyEmail() async {

@@ -1,4 +1,5 @@
 import 'package:clinic_app/pages/auth/activate.dart';
+import 'package:clinic_app/pages/auth/loading_state.dart';
 import 'package:clinic_app/pages/auth/login_page.dart';
 import 'package:clinic_app/pages/home/home.dart';
 import 'package:clinic_app/pages/user/update_user_data.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:clinic_app/locale/localizations.dart';
 import 'package:clinic_app/modules/app/app_entity.dart';
 import 'package:clinic_app/modules/graphql/with_gql.dart';
+import 'package:clinic_app/doctor/home_doctor.dart';
 import 'app_model.dart';
 import 'app_repository.dart';
 import 'app_theme.dart';
@@ -50,13 +52,11 @@ class ClinicApp extends StatelessWidget {
                 case AppState.authenticated:
                   currentPage = Home();
                   break;
+                case AppState.authenticated_doctor:
+                  currentPage = HomeDoctor();
+                  break;
                 default:
-                  currentPage = Container(
-                    color: Colors.white,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
+                  currentPage = LoadingState();
               }
 
               return WithGraphQl(

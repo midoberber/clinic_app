@@ -1,6 +1,7 @@
 enum AppState {
   uninitialized,
   authenticated,
+  authenticated_doctor,
   unauthenticated,
   authenticating,
   notCompleted,
