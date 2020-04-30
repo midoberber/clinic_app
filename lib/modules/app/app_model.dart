@@ -143,7 +143,7 @@ class AppStateModel extends ChangeNotifier {
       notifyListeners();
 
       Navigator.pop(context);
-      _processOauthLogin(context, code, "", email, "");
+      _processOauthLogin(context, code, "", email, "" , authType: "register");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -167,15 +167,14 @@ class AppStateModel extends ChangeNotifier {
   }
 
   _processOauthLogin(BuildContext context, String languageCode, String name,
-      String email, String avatar) async {
+      String email, String avatar ,{ String authType="login"}) async {
     // update the user in the database ...
     print("Enter authenticate .. ");
 
     var response = await http.post('http://206.189.238.178:3000/authenticate',
         body: json.encode({
           "email": email,
-          "name": name,
-          "avatar": avatar,
+          "authType":  authType
         }),
         headers: {'content-type': 'application/json'});
     // returns a JWT and meta data

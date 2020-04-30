@@ -78,6 +78,11 @@
 		<string>fbshareextension</string>
 	</array>
 
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) Camera used to call the doctor!</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) Microphone used to call the doctor!</string>
+
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
