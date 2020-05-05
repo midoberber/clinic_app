@@ -1,7 +1,7 @@
 import 'package:clinic_app/components/circular_user_avatar.dart';
 import 'package:clinic_app/components/drawer.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
-import 'package:clinic_app/pages/chat/call/call.dart';
+// import 'package:clinic_app/pages/chat/call/call.dart';
 import 'package:clinic_app/pages/home/new_appointment.dart';
 import 'package:clinic_app/widgets/reservation_by_status_query.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +38,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           color: Colors.white,
         ),
         onPressed: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (ctx) => NewAppointment()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (ctx) => NewAppointment()));
 
-          Navigator.push(context, MaterialPageRoute(builder: (ctx) => Call()));
+          // Navigator.push(context, MaterialPageRoute(builder: (ctx) => Call()));
         },
       ),
       body: NestedScrollView(
