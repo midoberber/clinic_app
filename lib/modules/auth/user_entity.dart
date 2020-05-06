@@ -30,11 +30,11 @@ class UserEntity {
         "isDoctor": this.isDoctor
       };
 
-  UserEntity compyWith({String displayName, String photo}) {
+  UserEntity compyWith({String displayName, String photo , bool isDoctor}) {
     return UserEntity(
         id: this.id,
         displayName: displayName ?? this.displayName,
-        isDoctor: this.isDoctor,
+        isDoctor: isDoctor ?? this.isDoctor,
         photoUrl: photo ?? this.photoUrl);
   }
 
