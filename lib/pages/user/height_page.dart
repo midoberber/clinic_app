@@ -13,7 +13,7 @@ class Height extends StatelessWidget {
       if (model.birthDate != null) {
         final date2 = DateTime.now();
         age = date2.difference(model.birthDate).inDays ~/ 365;
-      }
+      }  
 
       return Scaffold(
         body: Column(

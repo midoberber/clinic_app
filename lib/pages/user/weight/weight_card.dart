@@ -40,7 +40,7 @@ class WeightCard extends StatelessWidget {
               ? Container()
               : WeightSlider(
                   minValue: 30,
-                  maxValue: 110,
+                  maxValue: 200,
                   value: weight,
                   onChanged: onChanged,
                   width: constraints.maxWidth);
