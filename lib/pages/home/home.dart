@@ -96,8 +96,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ReservationByStatusQuery(
                 status: "accepted",
               ),
-              ReservationByStatusQuery(),
-              ReservationByStatusQuery(),
+              ReservationByStatusQuery(status: "pending",),
+              ReservationByStatusQuery(status: "archieve",),
             ],
             controller: _controller,
           )),

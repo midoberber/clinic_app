@@ -18,8 +18,7 @@ import 'app_entity.dart';
 import 'app_repository.dart';
 
 class AppStateModel extends ChangeNotifier {
-  final String doctorId = "325a72d1-3ac7-48c3-8fed-7c9e5464a8ee";
-
+  final String doctorId = "5f620038-c83b-4a05-b8d3-dffe21a420e9";
   final AppRepository repository;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -328,16 +327,19 @@ class AppStateModel extends ChangeNotifier {
                   isDoctor
                 }
               }"""), variables: {"id": user.id}));
-    UserEntity newUser =
-        user.compyWith(isDoctor: result.data["user_by_pk"]["isDoctor"]);
-    print(newUser.isDoctor);
-    await repository.store.setUser(newUser);
-    _userEntity = newUser;
-    _state = 
-    // newUser.isDoctor
-    //     ? AppState.authenticated_doctor
-    //     :
-         AppState.authenticated;
+    if (result.data != null) {
+      UserEntity newUser =
+          user.compyWith(isDoctor: result.data["user_by_pk"]["isDoctor"]);
+      print(newUser.isDoctor);
+      await repository.store.setUser(newUser);
+      _userEntity = newUser;
+    }
+
+    _state =
+        // newUser.isDoctor
+        //     ? AppState.authenticated_doctor
+        //     :
+        AppState.authenticated;
     notifyListeners();
   }
 

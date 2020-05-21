@@ -1,7 +1,10 @@
 import 'package:clinic_app/components/generic_message.dart';
 import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/modules/graphql/reservations_queries.dart';
+import 'package:clinic_app/widgets/patients_list.dart';
+import 'package:clinic_app/widgets/session_status_filter.dart';
 import 'package:clinic_app/widgets/sessions_list.dart';
+import 'package:clinic_app/widgets/timing_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,156 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../components/circular_user_avatar.dart';
-import '../components/generic_text_box.dart';
-
-/// Timing Dropdown  ..
-class TimingPicker extends StatelessWidget {
-  final int selectedDateFilter;
-  final Function onSelectionChanged;
-  final String specificDateString;
-  const TimingPicker(
-      {Key key,
-      this.selectedDateFilter,
-      this.onSelectionChanged,
-      this.specificDateString})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // bool isRTL = Localizations.localeOf(context).languageCode == "ar";
-
-    List categories = [
-      {"value": 0, "title": "Upcoming Today"},
-      {"value": 1, "title": "This Week"},
-      {"value": 2, "title": "This Month"},
-      {
-        "value": 3,
-        "title":
-            "Specific Day ${specificDateString == null ? "" : "($specificDateString)"}"
-      }
-    ];
-    List<DropdownMenuItem<dynamic>> items =
-        new List<DropdownMenuItem<dynamic>>();
-    for (var category in categories) {
-      items.add(DropdownMenuItem<dynamic>(
-        value: category['value'],
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            category["title"],
-            style: TextStyle(
-                color: Theme.of(context).buttonColor,
-                fontSize: (category['value'] == 3 && specificDateString != null)
-                    ? 12.0
-                    : 16.0),
-          ),
-        ),
-      ));
-    }
-
-    return DropdownButtonFormField<dynamic>(
-      icon: Icon(Icons.date_range),
-      decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white))),
-
-      hint: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-        child: Text(
-          "Select a Date",
-          style:
-              TextStyle(color: Theme.of(context).buttonColor, fontSize: 16.0),
-        ),
-      ),
-      value: selectedDateFilter,
-      // isDense: false,
-      onChanged: onSelectionChanged,
-      items: items,
-    );
-  }
-}
-
-class PatientSelector extends StatefulWidget {
-  final String selectedPatient;
-  final Function onSelectPatient;
-  PatientSelector({
-    Key key,
-    this.selectedPatient,
-    this.onSelectPatient,
-  }) : super(key: key);
-
-  @override
-  _PatientSelectorState createState() => new _PatientSelectorState();
-}
-
-class _PatientSelectorState extends State<PatientSelector> {
-  int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  _getContent() {
-    return Container(
-        // height: 500,
-        color: Colors.transparent,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Icon(FontAwesomeIcons.search),
-              trailing: Icon(Icons.close),
-              title: GenericTextField(
-                helperText: "Search in your patient",
-              ),
-            ),
-            Expanded(
-                child: Query(
-                    options: QueryOptions(
-                        documentNode: gql(getPatientReservationByStatus),
-                        pollInterval: 5,
-                        variables: {
-                          "patientId":
-                              Provider.of<AppStateModel>(context, listen: false)
-                                  .userEntity
-                                  .id,
-                          "reservateionStatus": widget.status
-                        }),
-                    builder: (result, {fetchMore, refetch}) {
-                      if (result.loading && result.data == null)
-                        return Scaffold(
-                            body: Center(child: CircularProgressIndicator()));
-                      if (result.exception != null) {
-                        print(result.exception.toString());
-                        return GenericMessage(
-                          title: "Something Wrong Happened",
-                          message: "Tap to Refetch",
-                          icon: Icons.error,
-                          onPressed: refetch,
-                        );
-                      }
-
-                      List reservations = result.data["reservation"];
-                      if (reservations.length == 0) {
-                        return GenericMessage(
-                          title: "You Don't Have any Resrvation here.",
-                          message: "Tap to Refetch",
-                          icon: Icons.error,
-                          onPressed: refetch,
-                        );
-                      }
-
-                      return Text("sd");
-                    })),
-          ],
-        ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _getContent();
-  }
-}
+import 'session_index_filter.dart';
 
 class ReservationByStatusQuery extends StatefulWidget {
   final String status;
@@ -174,51 +28,123 @@ class ReservationByStatusQuery extends StatefulWidget {
 class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
   int _selectedIndex = 0;
   String patientId;
+  String patientName = "All Patients";
+
+  String sessionStatus;
+  String sessionIndex;
 
   int selectedDateIndex = 0;
+
   String fromDate;
   String toDate;
-  String specificDateStr;
 
-  _showDialog() async {
-    await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: Text('Please select'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              onPressed: () {
-                Navigator.of(context).pop('Cancel');
+  _showDialog() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) => PatientSelector(
+              selectedPatient: patientId,
+              onSelectPatient: (id, name) {
+                setState(() {
+                  patientId = id;
+                  patientName = name;
+                });
+                Navigator.pop(context);
               },
-              child: Text('Cancel'),
-            ),
-            // new CupertinoDialogAction(
-            //   isDestructiveAction: true,
-            //   onPressed: (){Navigator.of(context).pop('Accept');},
-            //   child: new Text('Accept'),
-            // ),
-          ],
-          content: SingleChildScrollView(
-            child: Material(
-              child: PatientSelector(),
-            ),
-          ),
-        );
-      },
-      barrierDismissible: false,
-    );
+            ));
+  }
+
+  dynamic getCurrentFilterObj(bool isDoctor) {
+    Map<String, dynamic> filter;
+
+    if (selectedDateIndex == 0 || selectedDateIndex == 3) {
+      filter = Map<String, dynamic>.from({
+        "forDoctor": isDoctor,
+        "sessionFilter": {
+          "session_date": {"_eq": fromDate},
+        },
+        "filter": Map<String, dynamic>.from({
+          // "reservation_status": {"_eq": widget.status},
+          "reservation_sessions": Map<String, dynamic>.from({
+            "session_status": {"_eq": sessionStatus},
+            "session_date": {"_eq": fromDate}
+          })
+        })
+      });
+    } else {
+      filter = Map<String, dynamic>.from({
+        "forDoctor": isDoctor,
+        "sessionFilter": {
+          "_and": {
+            "session_date": {"_eq": fromDate},
+            "session_date": {"_eq": toDate}
+          },
+        },
+        "filter": Map<String, dynamic>.from({
+          "reservation_sessions": Map<String, dynamic>.from({
+            "_and": {
+              "session_date": {"_eq": fromDate},
+              "session_date": {"_eq": toDate}
+            },
+          })
+        })
+      });
+    }
+
+    if (patientId != null) {
+      filter["filter"]["patient_id"] =
+          Map<String, dynamic>.from({"_eq": patientId});
+    }
+
+    if (sessionStatus != null) {
+      if (sessionStatus == "pending" && widget.status == "archieve") {
+        filter["filter"]["reservation_sessions"]["_and"] =
+            Map<String, dynamic>.from({
+          "session_status": {"_eq": sessionStatus},
+          "session_date": {"_lte": fromDate},
+        });
+      } else {
+        if (widget.status == "accepted") {
+          sessionStatus = "pending";
+        }
+        filter["filter"]["reservation_sessions"]["session_status"] =
+            Map<String, dynamic>.from({"_eq": sessionStatus});
+      }
+    }
+
+    if (sessionIndex != null) {
+      filter["filter"]["reservation_sessions"]["session_index"] =
+          Map<String, dynamic>.from({"_eq": sessionIndex});
+    }
+
+    if (widget.status == "archieve") {
+      filter["filter"]["_or"] = Map<String, dynamic>.from({
+        "reservation_status": {"_eq": "declined"},
+        "reservation_status": {"_eq": "archived"},
+        "reservation_status": {"_eq": "accepted"}
+      });
+      // apply session status and _lte today ...
+    } else {
+      filter["filter"]["reservation_status"] =
+          Map<String, dynamic>.from({"_eq": widget.status});
+    }
+
+    String doctorId = Provider.of<AppStateModel>(context).doctorId;
+    filter["filter"]["doctor_id"] =
+        Map<String, dynamic>.from({"_eq": doctorId});
+
+    return filter;
   }
 
   @override
   Widget build(BuildContext context) {
     bool isDoctor = Provider.of<AppStateModel>(context).userEntity.isDoctor;
+
+    var f = getCurrentFilterObj(isDoctor);
     return Column(
       children: <Widget>[
         if (isDoctor)
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -226,12 +152,10 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                     width: (MediaQuery.of(context).size.width / 2) - 20,
                     child: TimingPicker(
                       selectedDateFilter: selectedDateIndex,
-                      specificDateString: specificDateStr,
+                      specificDateString: fromDate,
                       onSelectionChanged: (ss) async {
                         if (ss == 3) {
-                          // show datepicker dialog ..
                           var dat = await showDatePicker(
-                              // builder: (_, d) => Text("Date"),
                               initialDate: DateTime.now(),
                               firstDate:
                                   DateTime.now().subtract(Duration(days: 1)),
@@ -241,19 +165,36 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                             return;
                           } else {
                             setState(() {
-                              fromDate = dat.toString();
+                              fromDate = "${dat.year}-${dat.month}-${dat.day}";
                               toDate = dat.toString();
                               selectedDateIndex = ss;
-                              specificDateStr =
-                                  "${dat.day}/${dat.month}/${dat.year}";
+                              // specificDateStr =
+                              //     "${dat.year}-${dat.month}-${dat.day}";
                             });
                             return;
                           }
                         }
-                        setState(() {
-                          selectedDateIndex = ss;
-                          specificDateStr = null;
-                        });
+
+                        if (ss == 1) {
+                          // Next week
+                          var frm = DateTime.now();
+                          var tod = DateTime.now().add(Duration(days: 6));
+                          setState(() {
+                            selectedDateIndex = ss;
+                            fromDate = "${frm.year}-${frm.month}-${frm.day}";
+                            toDate = "${tod.year}-${tod.month}-${tod.day}";
+                          });
+                        }
+
+                        if (ss == 2) {
+                          // this month
+                          var frm = DateTime.now();
+                          setState(() {
+                            selectedDateIndex = ss;
+                            fromDate = "${frm.year}-${frm.month}-${frm.day}";
+                            toDate = "${frm.year}-${frm.month}-31";
+                          });
+                        }
                       },
                     )),
                 SizedBox(
@@ -267,7 +208,7 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                   child: ListTile(
                     onTap: _showDialog,
                     trailing: Icon(Icons.person),
-                    title: Text("All Patients",
+                    title: Text(patientName,
                         style: TextStyle(
                             color: Theme.of(context).buttonColor,
                             fontSize: 16.0)),
@@ -276,18 +217,36 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
               ],
             ),
           ),
+        if (isDoctor && widget.status == "archieve")
+          Container(
+            height: 30,
+            child: SessionStatusFilter(
+              selectedStatus: sessionStatus,
+              onStatusChanges: (status) {
+                setState(() {
+                  sessionStatus = status;
+                });
+              },
+            ),
+          ),
+        if (widget.status == "accepted")
+          Container(
+            height: 30,
+            child: SessionIndexFilter(
+              selectedIndex: sessionIndex,
+              onIndexChanges: (status) {
+                setState(() {
+                  sessionIndex = status;
+                });
+              },
+            ),
+          ),
         Expanded(
           child: Query(
             options: QueryOptions(
-                documentNode: gql(getPatientReservationByStatus),
+                documentNode: gql(getReservations),
                 pollInterval: 5,
-                variables: {
-                  "patientId":
-                      Provider.of<AppStateModel>(context, listen: false)
-                          .userEntity
-                          .id,
-                  "reservateionStatus": widget.status
-                }),
+                variables: f),
             builder: (result, {fetchMore, refetch}) {
               if (result.loading && result.data == null)
                 return Scaffold(
@@ -307,7 +266,7 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                 return GenericMessage(
                   title: "You Don't Have any Resrvation here.",
                   message: "Tap to Refetch",
-                  icon: Icons.error,
+                  icon: Icons.hourglass_empty,
                   onPressed: refetch,
                 );
               }
@@ -329,17 +288,34 @@ class _ReservationByStatusQueryState extends State<ReservationByStatusQuery> {
                               locale: currentLocale.languageCode == "en"
                                   ? 'en'
                                   : 'ar');
-                          return ListTile(
-                            onTap: () {
-                              setState(() {
-                                _selectedIndex = reservations.indexOf(item);
-                              });
-                            },
-                            leading: Icon(FontAwesomeIcons.ticketAlt),
-                            title: Text(
-                                "Reservation # ${reservations.indexOf(item) + 1}"),
-                            subtitle: Text("Submited since $since"),
-                          );
+                          return isDoctor
+                              ? ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedIndex =
+                                          reservations.indexOf(item);
+                                    });
+                                  },
+                                  leading: CircularUserAvatar(
+                                    url: item["reservation_patient"]["avatar"],
+                                  ),
+                                  title: Text(item["reservation_patient"]
+                                      ["display_name"]),
+                                  subtitle: Text(
+                                      "Reservation # ${reservations.indexOf(item) + 1}"),
+                                )
+                              : ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedIndex =
+                                          reservations.indexOf(item);
+                                    });
+                                  },
+                                  leading: Icon(FontAwesomeIcons.ticketAlt),
+                                  title: Text(
+                                      "Reservation # ${reservations.indexOf(item) + 1}"),
+                                  subtitle: Text("Submited since $since"),
+                                );
                         },
                         body: SessionList(
                           sessions: item["reservation_sessions"],
