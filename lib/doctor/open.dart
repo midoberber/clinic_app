@@ -40,7 +40,37 @@ class _OpenState extends State<Open> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: <Widget>[ 
+        children: <Widget>[
+          // Text(selectedValues.toString()),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: DropdownButton<String>(
+          //     onChanged: (String value) {
+          //       setState(() {
+          //         selectedValues = value;
+          //       });
+          //     },
+          //     isExpanded: true,
+          //     hint: Text('Select Date'),
+          //     value: selectedValues,
+          //     items: <String>[
+          //       "Today",
+          //       "This Week",
+          //       "ThisMonth",
+          //       "Custom Date",
+          //     ].map((String value) {
+          //       return new DropdownMenuItem<String>(
+          //         value: value,
+          //         child: new Text(value),
+          //       );
+          //     }).toList(),
+          //   ),
+          // ),
+          Text(
+            "Select date :",
+            style: TextStyle(fontSize: 15, color: secondary),
+          ),
+
           ChipsChoice<dynamic>.single(
             value: tag,
             options: ChipsChoiceOption.listFrom<dynamic, String>(
@@ -50,6 +80,8 @@ class _OpenState extends State<Open> {
             ),
             onChanged: (val) {
               setState(() => tag = val);
+              print(val);
+              print(tag);
             },
           ),
           tag == 0
@@ -58,7 +90,7 @@ class _OpenState extends State<Open> {
                   style: TextStyle(fontSize: 16, color: secondary),
                 )
               : tag == 1
-                  ? Text(
+                  ? Text( 
                       "From  " +
                           f.format(DateTime.now()).toString() +
                           " To " +
@@ -93,7 +125,7 @@ class _OpenState extends State<Open> {
                               ))
                           : Container(),
           ExpandedWidget(
-              itemCount: 4,
+              itemCount: 10,
               header: ListTile(
                 title: Text(
                   "Khairy Mohamed",

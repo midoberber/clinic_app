@@ -2,6 +2,7 @@ import 'package:clinic_app/pages/auth/activate.dart';
 import 'package:clinic_app/pages/auth/loading_state.dart';
 import 'package:clinic_app/pages/auth/login_page.dart';
 import 'package:clinic_app/pages/home/home.dart';
+import 'package:clinic_app/pages/profile.dart';
 import 'package:clinic_app/pages/user/update_user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class ClinicApp extends StatelessWidget {
                   currentPage = NotActivated();
                   break;
                 case AppState.authenticated:
-                  currentPage = Home();
+                  currentPage = ProfileOnePage();
                   break;
                 // case AppState.authenticated_doctor:
                 //   currentPage = HomeDoctor();
