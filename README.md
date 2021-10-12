@@ -35,3 +35,5 @@ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -sto
 generate a release key store .. 
 keytool -genkey -v -keystore ~/key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias clinic
 pass : 123456
+
+

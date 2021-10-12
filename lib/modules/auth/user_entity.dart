@@ -4,7 +4,7 @@ class UserEntity {
   final String photoUrl;
   final bool isDoctor;
 
-  UserEntity({this.isDoctor, this.id, this.displayName, this.photoUrl});
+  UserEntity({this.isDoctor=false, this.id, this.displayName, this.photoUrl});
 
   @override
   bool operator ==(Object other) =>

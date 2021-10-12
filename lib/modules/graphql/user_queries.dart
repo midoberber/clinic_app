@@ -14,7 +14,6 @@ mutation updateUser(\$user_id: uuid!, \$avatar: String ,
 }
 """;
 
-
 const getMyData = """
 query getMyData(\$id:uuid!){
   user_by_pk(id: \$id) {
@@ -31,3 +30,38 @@ query getMyData(\$id:uuid!){
 }
 """;
 
+const getUseByEmail = """
+query getUserByEmail (\$email :String!) {
+  user(where: {email: {_eq: \$email}}) {
+    display_name
+    isDoctor
+    isCompleted
+    isActivated
+    avatar
+    id
+  }
+}
+""";
+
+const updateUserToken = """
+      mutation updateToken(\$token: String! , \$user:uuid!) {
+        update_user(_set: {token: \$token}, where: {id: {_eq: \$user}}) {
+          affected_rows
+        }
+      }
+""";
+
+const insertUser = """
+mutation insertUser(\$email:String! , \$name:String! , \$avatar:String!) {
+  user: insert_user(objects: {email: \$email , display_name:\$name , avatar:\$avatar}) {
+    returning {
+      display_name
+      isDoctor
+      isCompleted
+      isActivated
+      avatar
+      id
+    }
+  }
+}
+""";

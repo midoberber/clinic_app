@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dospace/dospace.dart' as dospace;
- 
+
+// const bucketName = '';
+
 class FileUploader {
   static dospace.Spaces spaces = new dospace.Spaces(
-    region: "fra1",
-    accessKey: "T2OKKXAYR7PGAT2WAW32",
-    secretKey: "TmiqHRBp0ww3BcrZ3R92sTGv4HM7U2uCbeaHVqB1ftU",
+    region: "ams3",
+    accessKey: "5Z7HJJQSTHU3HNVX5PGI",
+    secretKey: "ZrKgGymuT9O5M/40sIUg6Lvgjw09Fo+C0a8p7JFX9dc",
   );
 
   static Future<dynamic> uploadFile(
@@ -15,7 +17,7 @@ class FileUploader {
 
     try {
       String etag = await bucket.uploadFile(
-           fileName, file, type, dospace.Permissions.public);
+          fileName, file, type, dospace.Permissions.public);
       return etag;
     } catch (e) {
       return e;

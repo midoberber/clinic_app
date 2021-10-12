@@ -17,9 +17,6 @@ class _LoadingStateState extends State<LoadingState> {
   void getState() {}
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<AppStateModel>(context, listen: false).getUserType(context);
-    });
     return Container(
       color: Colors.white,
       child: Center(

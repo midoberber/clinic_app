@@ -17,10 +17,9 @@ final OptimisticCache cache = OptimisticCache(
 );
 
 ValueNotifier<GraphQLClient> clientFor(
-    {@required String uri, String subscriptionUri, String token}) {
+    {@required String uri, String subscriptionUri}) {
   var header = {
-    'Authorization': 'Bearer $token',
-    // 'x-hasura-admin-secret': 'saco@2019',
+    'x-hasura-admin-secret': 'ClinicApP@2020',
     'content-type': 'application/json'
   };
   Link link = HttpLink(uri: uri, headers: header);
@@ -52,10 +51,10 @@ class ClientProvider extends StatelessWidget {
     @required this.child,
     @required String uri,
     @required String subscriptionUri,
-    @required this.token,
-  }) : client =
-            clientFor(uri: uri, subscriptionUri: subscriptionUri, token: token);
-  final String token;
+  }) : client = clientFor(
+          uri: uri,
+          subscriptionUri: subscriptionUri,
+        );
   final Widget child;
   final ValueNotifier<GraphQLClient> client;
 

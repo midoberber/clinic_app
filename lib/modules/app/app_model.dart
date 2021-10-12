@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
+import 'package:clinic_app/modules/graphql/user_queries.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'app_repository.dart';
 
 class AppStateModel extends ChangeNotifier {
   final String doctorId = "5f620038-c83b-4a05-b8d3-dffe21a420e9";
+
   final AppRepository repository;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -71,7 +73,7 @@ class AppStateModel extends ChangeNotifier {
 
       String code = Localizations.localeOf(context).languageCode;
 
-      _processOauthLogin(
+      await _processOauthLogin(
           context, code, user.displayName, user.email, user.photoUrl);
     } catch (e) {
       _state = AppState.unauthenticated;
@@ -89,8 +91,8 @@ class AppStateModel extends ChangeNotifier {
         final profile = json.decode(graphResponse.body);
         // send to the oauth server api ..
         String code = Localizations.localeOf(context).languageCode;
-        _processOauthLogin(context, code, profile["name"], profile["email"],
-            profile["picture"]["data"]["url"]);
+        await _processOauthLogin(context, code, profile["name"],
+            profile["email"], profile["picture"]["data"]["url"]);
         break;
       case FacebookLoginStatus.cancelledByUser:
         Toast.show("Canceled Login", context,
@@ -114,11 +116,10 @@ class AppStateModel extends ChangeNotifier {
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
 
-      print('signInEmail succeeded: $user');
       String code = Localizations.localeOf(context).languageCode;
       _loading = false;
       notifyListeners();
-      _processOauthLogin(context, code, "", email, "");
+      await _processOauthLogin(context, code, "", email, "");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -143,7 +144,8 @@ class AppStateModel extends ChangeNotifier {
       notifyListeners();
 
       Navigator.pop(context);
-      _processOauthLogin(context, code, "", email, "", authType: "register");
+      await _processOauthLogin(context, code, "", email, "",
+          authType: "register");
     } catch (e) {
       Toast.show(e.message.toString(), context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -166,41 +168,74 @@ class AppStateModel extends ChangeNotifier {
     }
   }
 
-  _processOauthLogin(BuildContext context, String languageCode, String name,
-      String email, String avatar,
+  Future<void> _processOauthLogin(BuildContext context, String languageCode,
+      String name, String email, String avatar,
       {String authType = "login"}) async {
-    // update the user in the database ...
-    print("Enter authenticate .. ");
-
-    var response = await http.post('http://206.189.238.178:3000/authenticate',
-        body: json.encode({"email": email, "authType": authType}),
-        headers: {'content-type': 'application/json'});
-    // returns a JWT and meta data
     try {
-      dynamic responseDecoded = json.decode(response.body);
-
-      var user = new UserEntity(
-          displayName: name,
-          id: responseDecoded["id"],
-          photoUrl: avatar,
-          isDoctor: false);
-
-      var appData = AppData(
-        isCompleted: responseDecoded["isCompleted"],
-        token: responseDecoded["token"],
-        languageCode: languageCode,
-        isWheelEnabled: false,
-      );
       // auth the app .
-      authenticate(appData, user);
-    } catch (e) {
-      print(e.toString());
-      Toast.show(response.body.toString(), context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      GraphQLClient _client = GraphQLProvider.of(context)?.value;
 
+      var result = await _client.query(QueryOptions(
+          documentNode: gql(getUseByEmail), variables: {"email": email}));
+
+      if (result.hasException) {
+        throw "Can't Retrieve user ";
+      }
+
+      if (authType != "login" && result.data["user"].length == 0) {
+        // register new user ...
+
+        var newResult = await _client.mutate(MutationOptions(
+            documentNode: gql(insertUser),
+            variables: {"email": email, "name": name, "avatar": avatar}));
+
+        if (newResult.hasException) {
+          throw "Can't Create user ";
+        }
+
+        var newUser = newResult.data["user"]["returning"][0];
+
+        setUserDataAndAuthenticate(
+            name: newUser["display_name"],
+            avatar: newUser["avatar"],
+            isDoctor: newUser["isDoctor"],
+            isCompleted: newUser["isCompleted"],
+            languageCode: languageCode,
+            id: newUser["id"]);
+
+        return;
+      }
+      var user = result.data["user"][0];
+
+      setUserDataAndAuthenticate(
+          name: user["display_name"],
+          avatar: user["avatar"],
+          isDoctor: user["isDoctor"],
+          isCompleted: user["isCompleted"],
+          languageCode: languageCode,
+          id: user["id"]);
+    } catch (e) {
+      Toast.show("Something Wrong happened", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       unauthenticate();
     }
-    // app complete its cycle ..
+  }
+
+  void setUserDataAndAuthenticate(
+      {String name,
+      String avatar,
+      bool isDoctor,
+      String id,
+      bool isCompleted,
+      String languageCode}) {
+    var user = new UserEntity(
+        displayName: name, id: id, photoUrl: avatar, isDoctor: isDoctor);
+
+    var appData = AppData(
+      isCompleted: isCompleted,
+      languageCode: languageCode,
+    );
+    authenticate(appData, user);
   }
 
   void load() async {
@@ -235,17 +270,12 @@ class AppStateModel extends ChangeNotifier {
       return;
     }
 
-    if (data.token.isNullOrEmpty()) {
-      _state = AppState.unauthenticated;
-    }
-
-    _state = AppState.uninitialized;
+    _state = AppState.authenticated;
 
     notifyListeners();
   }
 
   void registerFireBaseMessaging(BuildContext context) async {
-    // print(_isRegisterdNotification);
     if (!_isRegisterdNotification) {
       GraphQLClient _client = GraphQLProvider.of(context)?.value;
       if (_client == null) {
@@ -278,14 +308,9 @@ class AppStateModel extends ChangeNotifier {
 
       String token = await _firebaseMessaging.getToken();
       // MUTATE USER WITH GRAPHQL ..
-      QueryResult userUpdate =
-          await _client.mutate(MutationOptions(documentNode: gql("""
-            mutation updateToken(\$token: String! , \$user:uuid!) {
-              update_user(_set: {token: \$token}, where: {id: {_eq: \$user}}) {
-                affected_rows
-              }
-            }
-        """), variables: {"token": token, "user": userEntity.id}));
+      QueryResult userUpdate = await _client.mutate(MutationOptions(
+          documentNode: gql(updateUserToken),
+          variables: {"token": token, "user": userEntity.id}));
       _isRegisterdNotification = true;
     }
   }
@@ -317,46 +342,16 @@ class AppStateModel extends ChangeNotifier {
     this.load();
   }
 
-  void getUserType(BuildContext context) async {
-    GraphQLClient _client = GraphQLProvider.of(context)?.value;
-    var user = repository.loadUser();
-
-    var result = await _client
-        .query(QueryOptions(documentNode: gql("""query getIsDoctor(\$id:uuid!) {
-                user_by_pk(id: \$id) {
-                  isDoctor
-                }
-              }"""), variables: {"id": user.id}));
-    if (result.data != null) {
-      UserEntity newUser =
-          user.compyWith(isDoctor: result.data["user_by_pk"]["isDoctor"]);
-      print(newUser.isDoctor);
-      await repository.store.setUser(newUser);
-      _userEntity = newUser;
-    }
-
-    _state =
-        // newUser.isDoctor
-        //     ? AppState.authenticated_doctor
-        //     :
-        AppState.authenticated;
-    notifyListeners();
-  }
-
   void verifyEmail() async {
     final FirebaseUser currentUser = await _auth.currentUser();
     await currentUser.reload();
     this.load();
-    // if (currentUser != null && currentUser.isEmailVerified) {
-    //   // _state = AppState.authenticated;
-    // }
   }
 
   void authenticate(
     AppData data,
     UserEntity entity,
   ) async {
-    // set in the storage ..
     await repository.store.setAppData(data);
     await repository.store.setUser(entity);
     this.load();

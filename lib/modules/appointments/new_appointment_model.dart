@@ -131,7 +131,7 @@ class NewAppointmentModel extends ChangeNotifier {
 
     GraphQLClient _client = GraphQLProvider.of(context)?.value;
 
-    var appModel = Provider.of<AppStateModel>(context, listen: false);
+    var appModel =Provider.of<AppStateModel>(context,listen: false);
     var res = await _client.mutate(
         MutationOptions(documentNode: gql(createReservation), variables: {
       "patient_id": appModel.userEntity.id,

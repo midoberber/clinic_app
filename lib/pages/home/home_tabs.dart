@@ -1,9 +1,11 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:clinic_app/components/Loading.dart';
+import 'package:clinic_app/modules/app/app_model.dart';
 import 'package:clinic_app/pages/chat/chat_view.dart';
 
 import 'package:clinic_app/pages/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,6 +38,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppStateModel>(context, listen: false)
+          .registerFireBaseMessaging(context);
+    });
     if (isLoading == true) {
       return Loading();
     } else {

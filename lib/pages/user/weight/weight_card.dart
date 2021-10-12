@@ -2,7 +2,8 @@ import 'package:clinic_app/modules/utils/widget_utils.dart'
     show screenAwareSize;
 import 'package:clinic_app/pages/user/card_title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:photo_view/photo_view.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'weight_slider.dart';
 
 class WeightCard extends StatelessWidget {
@@ -29,7 +30,6 @@ class WeightCard extends StatelessWidget {
         ),
       ],
     );
- 
   }
 
   Widget _drawSlider() {
@@ -69,10 +69,12 @@ class WeightBackground extends StatelessWidget {
           ),
           child: child,
         ),
-        SvgPicture.asset(
-          "assets/images/weight_arrow.svg",
-          height: screenAwareSize(10.0, context),
-          width: screenAwareSize(18.0, context),
+        PhotoView(
+          customSize: Size(
+            screenAwareSize(18.0, context),
+            screenAwareSize(10.0, context),
+          ),
+          imageProvider: AssetImage("assets/images/weight_arrow.svg"),
         ),
       ],
     );

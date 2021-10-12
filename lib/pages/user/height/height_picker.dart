@@ -1,13 +1,12 @@
 import 'dart:math' as math;
 
-
 import 'package:clinic_app/modules/utils/widget_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:photo_view/photo_view.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 
 import 'height_slider.dart';
 import 'height_styles.dart';
-
 
 class HeightPicker extends StatefulWidget {
   final int maxHeight;
@@ -148,10 +147,9 @@ class _HeightPickerState extends State<HeightPicker> {
     double personImageHeight = _sliderPosition + marginBottomAdapted(context);
     return Align(
       alignment: Alignment.bottomCenter,
-      child: SvgPicture.asset(
-        "assets/images/person.svg",
-        height: personImageHeight,
-        width: personImageHeight / 3,
+      child: PhotoView(
+        customSize: Size(personImageHeight / 3, personImageHeight),
+        imageProvider: AssetImage("assets/images/person.svg"),
       ),
     );
   }

@@ -38,7 +38,6 @@ query getReservationDetails(\$filter: reservation_bool_exp, \$sessionFilter:rese
 }
 """;
 
-
 // const getReservationSessionsByReservationStatus = """
 // query getReservationSessionsByReservationStatus(\$reservation_status: reservation_status_enum!) {
 //   reservation(where: {reservation_status: {_eq: \$reservation_status}}) {
